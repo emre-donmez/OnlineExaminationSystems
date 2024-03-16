@@ -1,8 +1,7 @@
-﻿namespace OnlineExaminationSystems.API.Model.Entities
+﻿namespace OnlineExaminationSystems.API.Model.Dtos.User
 {
-    public class User
+    public class UserUpdateRequestModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
