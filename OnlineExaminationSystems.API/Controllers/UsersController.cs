@@ -1,10 +1,10 @@
-﻿using Dapper;
+﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.API.Model.Context;
 using OnlineExaminationSystems.API.Model.Dtos.User;
 using OnlineExaminationSystems.API.Model.Entities;
+using OnlineExaminationSystems.API.Model.Repository;
 
 namespace OnlineExaminationSystems.API.Controllers
 {
@@ -12,49 +12,36 @@ namespace OnlineExaminationSystems.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly DapperContext _context;
         private readonly IValidator<UserUpdateRequestModel> _validatorUserUpdateRequest;
         private readonly IValidator<User> _validatorUser;
+        private readonly IGenericRepository<User> _repository;
+        private readonly IMapper _mapper;
 
-        public UsersController(DapperContext context, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IValidator<User> validatorUser)
+        public UsersController(IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IValidator<User> validatorUser, IGenericRepository<User> repository, IMapper mapper)
         {
-            _context = context;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;
             _validatorUser = validatorUser;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var query = "SELECT * FROM Users WHERE is_del = 0";
+            var users = _repository.GetAll();
 
-            using (var connection = _context.CreateConnection())
-            {
-                var users = await connection.QueryAsync<User>(query);
-
-                return Ok(users);
-            }
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var query = "SELECT * FROM Users WHERE id = @Id AND is_del = 0";
+            var user = _repository.GetById(id);
 
-            var parameters = new
-            {
-                Id = id
-            };
+            if (user is null)
+                return NotFound();
 
-            using (var connection = _context.CreateConnection())
-            {
-                var user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
-
-                if (user is null)
-                    return NotFound();
-
-                return Ok(user);
-            }
+            return Ok(user);
         }
 
         [HttpPost]
@@ -65,151 +52,68 @@ namespace OnlineExaminationSystems.API.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            var query = "INSERT INTO Users (Name, Surname, Email, Password, Role) VALUES (@Name, @Surname, @Email, @Password, @Role)" +
-                        "SELECT CAST(SCOPE_IDENTITY() as int)";
+            var mappingModel = _mapper.Map<User>(model);
 
-            var parameters = new
-            {
-                Name = model.Name,
-                Surname = model.Surname,
-                Email = model.Email,
-                Password = model.Password,
-                Role = model.Role
-            };
+            var result = _repository.Insert(mappingModel);
 
-            using (var connection = _context.CreateConnection())
-            {
-                var id = await connection.QuerySingleAsync<int>(query, parameters);
-
-                var result = new User
-                {
-                    Id = id,
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Email = model.Email,
-                    Password = model.Password,
-                    Role = model.Role
-                };
-
-                return CreatedAtAction(nameof(Get), new { id = id }, result);
-            }
+            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UserUpdateRequestModel model)
         {
-            var selectQuery = "SELECT * FROM Users WHERE id = @Id AND is_del = 0";
+            var user = _repository.GetById(id);
 
-            var selectParameters = new
-            {
-                Id = id
-            };
+            if (user is null)
+                return NotFound();
 
-            using (var connection = _context.CreateConnection())
-            {
-                var user = await connection.QuerySingleOrDefaultAsync<User>(selectQuery, selectParameters);
+            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
 
-                if (user is null)
-                    return NotFound();
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
-                var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
+            var mappingModel = _mapper.Map<User>(model);
+            mappingModel.Id = id;
 
-                if (!validationResult.IsValid)
-                    return BadRequest(validationResult.Errors);
+            var result = _repository.Update(mappingModel);
 
-                var query = "UPDATE Users SET Name = @Name, Surname = @Surname, Email = @Email, Password = @Password, Role = @Role WHERE id = @Id AND is_del = 0";
-
-                var parameters = new
-                {
-                    Id = id,
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Email = model.Email,
-                    Password = model.Password,
-                    Role = model.Role
-                };
-
-                await connection.ExecuteAsync(query, parameters);
-
-                var result = new User
-                {
-                    Id = id,
-                    Name = model.Name,
-                    Surname = model.Surname,
-                    Email = model.Email,
-                    Password = model.Password,
-                    Role = model.Role,
-                };
-
-                return Ok(result);
-            }
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var selectQuery = "SELECT * FROM Users WHERE id = @Id AND is_del = 0";
+            var user = _repository.GetById(id);
 
-            var parameters = new
-            {
-                Id = id
-            };
+            if (user is null)
+                return NotFound();
 
-            using (var connection = _context.CreateConnection())
-            {
-                var user = await connection.QuerySingleOrDefaultAsync<User>(selectQuery, parameters);
+            var deleteOperation = _repository.SoftDelete(id);
 
-                if (user is null)
-                    return NotFound();
-
-                var query = "UPDATE Users SET is_del = 1 WHERE id = @Id";
-
-                await connection.ExecuteAsync(query, parameters);
-
+            if (deleteOperation)
                 return Ok();
-            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)
         {
-            var selectQuery = "SELECT * FROM Users WHERE id = @Id AND is_del = 0";
+            var user = _repository.GetById(id);
 
-            var selectParameters = new
-            {
-                Id = id
-            };
+            if (user is null)
+                return NotFound();
 
-            using (var connection = _context.CreateConnection())
-            {
-                var user = await connection.QuerySingleOrDefaultAsync<User>(selectQuery, selectParameters);
+            patchDocument.ApplyTo(user);
 
-                if (user is null)
-                    return NotFound();
+            var validationResult = await _validatorUser.ValidateAsync(user);
 
-                patchDocument.ApplyTo(user);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
-                var validationResult = await _validatorUser.ValidateAsync(user);
+            var result = _repository.Update(user);
 
-                if (!validationResult.IsValid)
-                    return BadRequest(validationResult.Errors);
-
-                var updateQuery = "UPDATE Users SET Name = @Name, Surname = @Surname, Email = @Email, Password = @Password, Role = @Role WHERE id = @Id AND is_del = 0";
-
-                var updateParameters = new
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Surname = user.Surname,
-                    Email = user.Email,
-                    Password = user.Password,
-                    Role = user.Role
-                };
-
-                await connection.ExecuteAsync(updateQuery, updateParameters);
-
-                return Ok(updateParameters);
-            }
+            return Ok(result);
         }
     }
 }
