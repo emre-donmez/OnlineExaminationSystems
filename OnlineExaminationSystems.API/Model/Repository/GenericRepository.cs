@@ -91,6 +91,16 @@ namespace OnlineExaminationSystems.API.Model.Repository
             }
 
             return model;
+        }  
+
+        public IEnumerable<object> ExecuteQuery(string query, object parameters)
+        {
+            using (var connection = _context.CreateConnection())
+            {
+                var result = connection.Query(query,parameters);
+
+                return result;
+            }
         }
     }
 }
