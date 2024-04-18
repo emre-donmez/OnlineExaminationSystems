@@ -41,5 +41,13 @@ namespace OnlineExaminationSystems.API.Model.Repository
         /// <param name="id">The ID of the record to delete.</param>
         /// <returns>True if the record is successfully soft deleted, otherwise false.</returns>
         bool SoftDelete(int id);
+
+        /// <summary>
+        /// Executes the specified SQL query with the given parameters and returns the result as an IEnumerable<object>.
+        /// </summary>
+        /// <param name="query">The SQL query to execute.</param>
+        /// <param name="parameters">The parameters to be used in the query.</param>
+        /// <returns>An IEnumerable<object> containing the result of the query.</returns>
+        IEnumerable<object> ExecuteQuery(string query, object parameters);
     }
 }
