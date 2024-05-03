@@ -1,6 +1,7 @@
 ﻿using Dapper;
-using OnlineExaminationSystems.API.Model.Context;
+using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Model.Entities;
+using System.Globalization;
 using System.Text;
 
 namespace OnlineExaminationSystems.API.Model.Repository
@@ -8,8 +9,9 @@ namespace OnlineExaminationSystems.API.Model.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     {
         private readonly DapperContext _context;
-        private readonly static string _tableName = GetTableName();
-        private readonly static List<string> _colomnNames = GetColomnNames();
+        private static readonly string _tableName = GetTableName();
+        private static readonly List<string> _columnNames = GetColumnNames();
+        private static readonly List<string> _columnNamesForValue = GetColumnNamesForValue();
 
         public GenericRepository(DapperContext context)
         {
@@ -24,19 +26,42 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
             return sb.ToString();
         }
-        private static List<string> GetColomnNames()
+
+        private static List<string> GetColumnNamesForValue()
         {
             return typeof(T).GetProperties().Where(p => p.Name != "Id").Select(p => p.Name).ToList();
         }
 
+        private static List<string> GetColumnNames()
+        {
+            return typeof(T)
+                .GetProperties()
+                .Where(p => p.Name != "Id")
+                .Select(p => ToHyphenCase(p.Name))
+                .ToList();
+        }
+
+        public static string ToHyphenCase(string input)
+        {
+            string formatted = new string(input.Select((c, i) => i > 0 && char.IsUpper(c) ? '_' + c.ToString() : c.ToString())
+                                                .SelectMany(c => c)
+                                                .ToArray());
+
+            CultureInfo cultureInfo = new CultureInfo("tr-TR", false);
+
+            string lowerCase = formatted.ToLower(cultureInfo).Replace("ı", "i").Replace("ğ", "g").Replace("ü", "u").Replace("ş", "s").Replace("ö", "o").Replace("ç", "c");
+
+            return lowerCase;
+        }
+
         public T Insert(T model)
         {
-            var query = $"INSERT INTO {_tableName} ({string.Join(',',_colomnNames)}) VALUES (@{string.Join(", @", _colomnNames)})" +
+            var query = $"INSERT INTO {_tableName} ({string.Join(',', _columnNames)}) VALUES (@{string.Join(", @", _columnNamesForValue)})" +
                         "SELECT CAST(SCOPE_IDENTITY() as int)";
 
             using (var connection = _context.CreateConnection())
             {
-                var id = connection.QuerySingle<int>(query,model);
+                var id = connection.QuerySingle<int>(query, model);
                 model.Id = id;
             }
 
@@ -69,7 +94,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public bool SoftDelete(int id)
         {
-            var query = $"UPDATE {_tableName} SET is_del = 1 WHERE id = {id}";      
+            var query = $"UPDATE {_tableName} SET is_del = 1 WHERE id = {id}";
 
             using (var connection = _context.CreateConnection())
             {
@@ -81,7 +106,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public T Update(T model)
         {
-            var setValues = _colomnNames.Select(prop => $"{prop} = @{prop}");
+            var setValues = _columnNames.Select(prop => $"{prop} = @{prop}");
 
             var query = $"UPDATE {_tableName} SET {string.Join(", ", setValues)} WHERE id = @Id AND is_del = 0";
 
@@ -91,13 +116,13 @@ namespace OnlineExaminationSystems.API.Model.Repository
             }
 
             return model;
-        }  
+        }
 
         public IEnumerable<object> ExecuteQuery(string query, object parameters)
         {
             using (var connection = _context.CreateConnection())
             {
-                var result = connection.Query(query,parameters);
+                var result = connection.Query(query, parameters);
 
                 return result;
             }

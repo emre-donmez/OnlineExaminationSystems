@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace OnlineExaminationSystems.API.Model.Context
+namespace OnlineExaminationSystems.API.Data.Context
 {
     public class DapperContext
     {
