@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using FluentValidation;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Model.Entities;
-using OnlineExaminationSystems.API.Model.Helpers;
-using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Services;
 
 namespace OnlineExaminationSystems.API.Controllers
 {
@@ -13,117 +9,106 @@ namespace OnlineExaminationSystems.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly IValidator<UserUpdateRequestModel> _validatorUserUpdateRequest;
-        private readonly IValidator<User> _validatorUser;
-        private readonly IGenericRepository<User> _repository;
-        private readonly IMapper _mapper;
-        private readonly IPasswordHashHelper _passwordHashHelper;
 
-        public UsersController(IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IValidator<User> validatorUser, IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper)
+        public UsersController(IUserService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest)
         {
+            _userService = userService;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;
-            _validatorUser = validatorUser;
-            _repository = repository;
-            _mapper = mapper;
-            _passwordHashHelper = passwordHashHelper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
-            var users = _repository.GetAll();
-
+            var users = _userService.GetAll();
             return Ok(users);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public IActionResult Get(int id)
         {
-            var user = _repository.GetById(id);
-
-            if (user is null)
+            var user = _userService.GetById(id);
+            if (user == null)
                 return NotFound();
 
             return Ok(user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserUpdateRequestModel model)
+        public async Task<IActionResult> CreateAsync(UserUpdateRequestModel model)
         {
-            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
+            try
+            {
+                var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
 
-            var mappingModel = _mapper.Map<User>(model);
-
-            mappingModel.Password = _passwordHashHelper.HashPassword(model.Password);      
-
-            var result = _repository.Insert(mappingModel);
-
-            return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
+                var user = _userService.CreateUserWithHashedPassword(model);
+                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UserUpdateRequestModel model)
+        public async Task<IActionResult> UpdateAsync(int id, UserUpdateRequestModel model)
         {
-            var user = _repository.GetById(id);
+            try
+            {
+                var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
 
-            if (user is null)
-                return NotFound();
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
 
-            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            var mappingModel = _mapper.Map<User>(model);
-            mappingModel.Id = id;
-            mappingModel.Password = _passwordHashHelper.HashPassword(model.Password);
-
-            var result = _repository.Update(mappingModel);
-
-            return Ok(result);
+                var user = _userService.UpdateUserWithHashedPassword(model);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var user = _repository.GetById(id);
-
-            if (user is null)
-                return NotFound();
-
-            var deleteOperation = _repository.SoftDelete(id);
-
-            if (deleteOperation)
-                return Ok();
-
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            try
+            {
+                var result = _userService.Delete(id);
+                return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)
-        {
-            var user = _repository.GetById(id);
+        //[HttpPatch("{id}")]
+        //public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)
+        //{
+        //    var user = _repository.GetById(id);
 
-            if (user is null)
-                return NotFound();
+        //    if (user is null)
+        //        return NotFound();
 
-            patchDocument.ApplyTo(user);
+        //    patchDocument.ApplyTo(user);
 
-            var validationResult = await _validatorUser.ValidateAsync(user);
+        //    var validationResult = await _validatorUser.ValidateAsync(user);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+        //    if (!validationResult.IsValid)
+        //        return BadRequest(validationResult.Errors);
 
-            var passwordPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "/Password", "Password" };
-            if (passwordPaths.Any(p => patchDocument.Operations.Any(op => op.path.Equals(p, StringComparison.OrdinalIgnoreCase))))            
-                user.Password = _passwordHashHelper.HashPassword(user.Password);                       
+        //    var passwordPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "/Password", "Password" };
+        //    if (passwordPaths.Any(p => patchDocument.Operations.Any(op => op.path.Equals(p, StringComparison.OrdinalIgnoreCase))))
+        //        user.Password = _passwordHashHelper.HashPassword(user.Password);
 
-            var result = _repository.Update(user);
+        //    var result = _repository.Update(user);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
     }
 }
