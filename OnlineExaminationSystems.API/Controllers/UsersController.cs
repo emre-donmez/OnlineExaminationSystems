@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Services;
+using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers
 {
@@ -29,6 +29,7 @@ namespace OnlineExaminationSystems.API.Controllers
         public IActionResult Get(int id)
         {
             var user = _userService.GetById(id);
+
             if (user == null)
                 return NotFound();
 
@@ -38,53 +39,33 @@ namespace OnlineExaminationSystems.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(UserUpdateRequestModel model)
         {
-            try
-            {
-                var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
+            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
 
-                if (!validationResult.IsValid)
-                    return BadRequest(validationResult.Errors);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
-                var user = _userService.CreateUserWithHashedPassword(model);
-                return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var user = _userService.CreateUserWithHashedPassword(model);
+            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UserUpdateRequestModel model)
         {
-            try
-            {
-                var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
+            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
 
-                if (!validationResult.IsValid)
-                    return BadRequest(validationResult.Errors);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
 
-                var user = _userService.UpdateUserWithHashedPassword(model);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var user = _userService.UpdateUserWithHashedPassword(id,model);
+
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try
-            {
-                var result = _userService.Delete(id);
-                return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = _userService.Delete(id);
+            return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         //[HttpPatch("{id}")]
