@@ -1,6 +1,8 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Model.Dtos.User;
+using OnlineExaminationSystems.API.Model.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers
@@ -11,11 +13,15 @@ namespace OnlineExaminationSystems.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IValidator<UserUpdateRequestModel> _validatorUserUpdateRequest;
+        private readonly IMapper _mapper;
+        private readonly IValidator<User> _validatorUserValidator;
 
-        public UsersController(IUserService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest)
+        public UsersController(IUserService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser)
         {
             _userService = userService;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;
+            _validatorUserValidator = validatorUser;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -51,14 +57,17 @@ namespace OnlineExaminationSystems.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, UserUpdateRequestModel model)
         {
-            var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
+            var user = _mapper.Map<User>(model);
+            user.Id = id;
+
+            var validationResult = await _validatorUserValidator.ValidateAsync(user);
 
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            var user = _userService.UpdateUserWithHashedPassword(id,model);
+            var result = _userService.UpdateUserWithHashedPassword(user);
 
-            return Ok(user);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

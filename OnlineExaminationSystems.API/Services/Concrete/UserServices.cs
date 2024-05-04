@@ -24,20 +24,26 @@ namespace OnlineExaminationSystems.API.Services
             return base.Create(user);
         }
 
-        public User UpdateUserWithHashedPassword(int id,object updateRequestModel)
+        public User UpdateUserWithHashedPassword(User user)
         {
-            var user = _mapper.Map<User>(updateRequestModel);
-
-            user.Id = id;
             user.Password = _passwordHashHelper.HashPassword(user.Password);
 
             return base.Update(user);
-        } 
+        }
 
         public async Task<bool> IsUniqueEmailAsync(string email)
         {
-            var query = $"SELECT * FROM USERS WHERE email = @Email";
+            var query = $"SELECT 1 FROM USERS WHERE email = @Email";
             var parameters = new { Email = email };
+
+            var existingUser = _repository.ExecuteQuery(query, parameters);
+            return existingUser.Count() == 0;
+        }
+
+        public async Task<bool> IsUniqueEmailAsync(int id, string email)
+        {
+            var query = $"SELECT 1 FROM USERS WHERE email = @Email and id != @Id";
+            var parameters = new { Email = email, Id = id };
 
             var existingUser = _repository.ExecuteQuery(query, parameters);
             return existingUser.Count() == 0;

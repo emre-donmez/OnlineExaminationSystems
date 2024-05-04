@@ -28,7 +28,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
             _columnNamesForUpdate = columnNamesForUpdate;
         }
 
-        private (List<string> columnNamesWithAttribute, List<string> columnNames, List<string> selectionColumns,List<string> columnNamesForUpdate) GetColumnNamesAll()
+        private (List<string> columnNamesWithAttribute, List<string> columnNames, List<string> selectionColumns, List<string> columnNamesForUpdate) GetColumnNamesAll()
         {
             var columnNamesWithAttribute = new List<string>();
             var columnNames = new List<string>();
@@ -39,7 +39,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
             {
                 var columnName = property.Name;
                 var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
-              
+
                 var selection = columnAttribute != null ? $"{columnAttribute.Name} AS {columnName}" : columnName;
 
                 selectionColumns.Add(selection);
@@ -88,7 +88,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public IEnumerable<T> GetAll()
         {
-            var query = $"SELECT {string.Join(',',_columnNamesForSelection)} FROM {_tableName} WHERE is_del = 0";
+            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE is_del = 0";
 
             using (var connection = _context.CreateConnection())
             {

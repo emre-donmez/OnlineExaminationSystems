@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using OnlineExaminationSystems.API.Model.Dtos.User;
+using OnlineExaminationSystems.API.Model.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Validators
 {
-    public class UserUpdateRequestModelValidator : AbstractValidator<UserUpdateRequestModel>
+    public class UserValidator : AbstractValidator<User>
     {
         private readonly IUserService _userService;
 
-        public UserUpdateRequestModelValidator(IUserService userService)
+        public UserValidator(IUserService userService)
         {
             _userService = userService;
 
@@ -17,7 +17,7 @@ namespace OnlineExaminationSystems.API.Validators
 
             RuleFor(model => model.Email).NotEmpty().WithMessage("Email is required.")
                                               .EmailAddress().WithMessage("Invalid email address.")
-                                              .MustAsync(async (email, cancellation) => await _userService.IsUniqueEmailAsync(email))
+                                              .MustAsync(async (model, email, cancellation) => await _userService.IsUniqueEmailAsync(model.Id, email))
                                                 .WithMessage("This email address is already registered.");
 
             RuleFor(model => model.Password).NotEmpty().WithMessage("Password is required.")
