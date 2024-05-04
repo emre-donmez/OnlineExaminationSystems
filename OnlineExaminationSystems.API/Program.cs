@@ -1,6 +1,7 @@
 using FluentValidation;
 using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Model.Dtos.User;
+using OnlineExaminationSystems.API.Model.Entities;
 using OnlineExaminationSystems.API.Model.Helpers;
 using OnlineExaminationSystems.API.Model.Repository;
 using OnlineExaminationSystems.API.Services;
@@ -12,11 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddControllers()
-    .AddNewtonsoftJson();
+builder.Services.AddControllers();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IValidator<UserUpdateRequestModel>, UserUpdateRequestModelValidator>();
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
+
 builder.Services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
 builder.Services.AddScoped<IUserService, UserService>();
 

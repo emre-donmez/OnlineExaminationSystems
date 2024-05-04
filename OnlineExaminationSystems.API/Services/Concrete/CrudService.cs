@@ -9,6 +9,7 @@ namespace OnlineExaminationSystems.API.Services
     {
         protected readonly IGenericRepository<T> _repository;
         protected readonly IMapper _mapper;
+
         public CrudService(IGenericRepository<T> repository, IMapper mapper)
         {
             _repository = repository;
@@ -48,7 +49,7 @@ namespace OnlineExaminationSystems.API.Services
             return _repository.Update(model);
         }
 
-        public T Update(T model) 
+        public T Update(T model)
         {
             return _repository.Update(model);
         }
