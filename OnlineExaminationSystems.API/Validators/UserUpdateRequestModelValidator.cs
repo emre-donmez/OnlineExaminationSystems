@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Services;
+using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Validators
 {
@@ -27,7 +27,7 @@ namespace OnlineExaminationSystems.API.Validators
                                              .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
 
             RuleFor(model => model.RoleId).NotEmpty().WithMessage("Role is required.")
-                                        .Must(role => role == 1 || role == 2).WithMessage("Role can only be 'Academician' or 'Student'.");
+                                        .Must(role => role == 1 || role == 2).WithMessage("Role can only be '1 (Academician)' or '2 (Student)'.");
         }
     }
 }

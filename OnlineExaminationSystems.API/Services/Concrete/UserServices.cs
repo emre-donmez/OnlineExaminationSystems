@@ -2,6 +2,7 @@
 using OnlineExaminationSystems.API.Model.Entities;
 using OnlineExaminationSystems.API.Model.Helpers;
 using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Services
 {
@@ -23,10 +24,11 @@ namespace OnlineExaminationSystems.API.Services
             return base.Create(user);
         }
 
-        public User UpdateUserWithHashedPassword(object updateRequestModel)
+        public User UpdateUserWithHashedPassword(int id,object updateRequestModel)
         {
             var user = _mapper.Map<User>(updateRequestModel);
 
+            user.Id = id;
             user.Password = _passwordHashHelper.HashPassword(user.Password);
 
             return base.Update(user);

@@ -1,62 +1,80 @@
 ﻿using Dapper;
 using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Model.Entities;
-using System.Globalization;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace OnlineExaminationSystems.API.Model.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     {
         private readonly DapperContext _context;
-        private static readonly string _tableName = GetTableName();
-        private static readonly List<string> _columnNames = GetColumnNames();
-        private static readonly List<string> _columnNamesForValue = GetColumnNamesForValue();
+        private readonly string _tableName;
+        private readonly List<string> _columnNamesWithAttribute;
+        private readonly List<string> _columnNames;
+        private readonly List<string> _columnNamesForSelection;
+        private readonly List<string> _columnNamesForUpdate;
 
         public GenericRepository(DapperContext context)
         {
             _context = context;
+            _tableName = GetTableName();
+
+            var (columnNamesWithAttribute, columnNames, columnNamesForSelection, columnNamesForUpdate) = GetColumnNamesAll();
+
+            _columnNamesWithAttribute = columnNamesWithAttribute;
+            _columnNames = columnNames;
+            _columnNamesForSelection = columnNamesForSelection;
+            _columnNamesForUpdate = columnNamesForUpdate;
+        }
+
+        private (List<string> columnNamesWithAttribute, List<string> columnNames, List<string> selectionColumns,List<string> columnNamesForUpdate) GetColumnNamesAll()
+        {
+            var columnNamesWithAttribute = new List<string>();
+            var columnNames = new List<string>();
+            var selectionColumns = new List<string>();
+            var columnNamesForUpdate = new List<string>();
+
+            foreach (var property in typeof(T).GetProperties())
+            {
+                var columnName = property.Name;
+                var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
+              
+                var selection = columnAttribute != null ? $"{columnAttribute.Name} AS {columnName}" : columnName;
+
+                selectionColumns.Add(selection);
+
+                if (property.Name == "Id") continue;
+
+                columnNames.Add(columnName);
+
+                string value = $"{columnName} =@{columnName}";
+                string column = columnName;
+
+                if (columnAttribute != null)
+                {
+                    value = $"{columnAttribute.Name} =@{columnName}";
+                    column = columnAttribute.Name;
+                }
+
+                columnNamesWithAttribute.Add(column);
+                columnNamesForUpdate.Add(value);
+            }
+
+            return (columnNamesWithAttribute, columnNames, selectionColumns, columnNamesForUpdate);
         }
 
         private static string GetTableName()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(typeof(T).Name);
-            sb.Append('s');
+            var type = typeof(T);
+            var tableAttribute = type.GetCustomAttribute<TableAttribute>();
 
-            return sb.ToString();
-        }
-
-        private static List<string> GetColumnNamesForValue()
-        {
-            return typeof(T).GetProperties().Where(p => p.Name != "Id").Select(p => p.Name).ToList();
-        }
-
-        private static List<string> GetColumnNames()
-        {
-            return typeof(T)
-                .GetProperties()
-                .Where(p => p.Name != "Id")
-                .Select(p => ToHyphenCase(p.Name))
-                .ToList();
-        }
-
-        public static string ToHyphenCase(string input)
-        {
-            string formatted = new string(input.Select((c, i) => i > 0 && char.IsUpper(c) ? '_' + c.ToString() : c.ToString())
-                                                .SelectMany(c => c)
-                                                .ToArray());
-
-            CultureInfo cultureInfo = new CultureInfo("tr-TR", false);
-
-            string lowerCase = formatted.ToLower(cultureInfo).Replace("ı", "i").Replace("ğ", "g").Replace("ü", "u").Replace("ş", "s").Replace("ö", "o").Replace("ç", "c");
-
-            return lowerCase;
+            return tableAttribute == null ? type.Name : tableAttribute.Name;
         }
 
         public T Insert(T model)
         {
-            var query = $"INSERT INTO {_tableName} ({string.Join(',', _columnNames)}) VALUES (@{string.Join(", @", _columnNamesForValue)})" +
+            var query = $"INSERT INTO {_tableName} ({string.Join(',', _columnNamesWithAttribute)}) VALUES (@{string.Join(", @", _columnNames)})" +
                         "SELECT CAST(SCOPE_IDENTITY() as int)";
 
             using (var connection = _context.CreateConnection())
@@ -70,7 +88,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public IEnumerable<T> GetAll()
         {
-            var query = $"SELECT * FROM {_tableName} WHERE is_del = 0";
+            var query = $"SELECT {string.Join(',',_columnNamesForSelection)} FROM {_tableName} WHERE is_del = 0";
 
             using (var connection = _context.CreateConnection())
             {
@@ -82,7 +100,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public T? GetById(int id)
         {
-            var query = $"SELECT * FROM {_tableName} WHERE id = {id} AND is_del = 0";
+            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE id = {id} AND is_del = 0";
 
             using (var connection = _context.CreateConnection())
             {
@@ -106,9 +124,7 @@ namespace OnlineExaminationSystems.API.Model.Repository
 
         public T Update(T model)
         {
-            var setValues = _columnNames.Select(prop => $"{prop} = @{prop}");
-
-            var query = $"UPDATE {_tableName} SET {string.Join(", ", setValues)} WHERE id = @Id AND is_del = 0";
+            var query = $"UPDATE {_tableName} SET {string.Join(", ", _columnNamesForUpdate)} WHERE id = @Id AND is_del = 0";
 
             using (var connection = _context.CreateConnection())
             {

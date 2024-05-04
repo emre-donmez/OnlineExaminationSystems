@@ -4,6 +4,7 @@ using OnlineExaminationSystems.API.Model.Dtos.User;
 using OnlineExaminationSystems.API.Model.Helpers;
 using OnlineExaminationSystems.API.Model.Repository;
 using OnlineExaminationSystems.API.Services;
+using OnlineExaminationSystems.API.Services.Abstract;
 using OnlineExaminationSystems.API.Validators;
 using System.Reflection;
 

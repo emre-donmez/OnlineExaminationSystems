@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OnlineExaminationSystems.API.Model.Entities;
 using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Services
 {
@@ -40,9 +41,10 @@ namespace OnlineExaminationSystems.API.Services
             return _repository.GetById(id);
         }
 
-        public T Update(object updateRequestModel)
+        public T Update(int id, object updateRequestModel)
         {
             var model = _mapper.Map<T>(updateRequestModel);
+            model.Id = id;
             return _repository.Update(model);
         }
 
