@@ -6,7 +6,8 @@ using OnlineExaminationSystems.API.Model.Helpers;
 using OnlineExaminationSystems.API.Model.Repository;
 using OnlineExaminationSystems.API.Services;
 using OnlineExaminationSystems.API.Services.Abstract;
-using OnlineExaminationSystems.API.Validators;
+using OnlineExaminationSystems.API.Services.Concrete;
+using OnlineExaminationSystems.API.Validators.User;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,8 @@ builder.Services.AddScoped<IValidator<UserUpdateRequestModel>, UserUpdateRequest
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 builder.Services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<ILessonsService, LessonsService>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

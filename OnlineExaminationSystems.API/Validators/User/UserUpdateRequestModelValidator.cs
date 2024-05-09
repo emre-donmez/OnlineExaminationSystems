@@ -2,13 +2,13 @@
 using OnlineExaminationSystems.API.Model.Dtos.User;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Validators
+namespace OnlineExaminationSystems.API.Validators.User
 {
     public class UserUpdateRequestModelValidator : AbstractValidator<UserUpdateRequestModel>
     {
-        private readonly IUserService _userService;
+        private readonly IUsersService _userService;
 
-        public UserUpdateRequestModelValidator(IUserService userService)
+        public UserUpdateRequestModelValidator(IUsersService userService)
         {
             _userService = userService;
 

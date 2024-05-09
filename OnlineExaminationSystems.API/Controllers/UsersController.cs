@@ -11,12 +11,12 @@ namespace OnlineExaminationSystems.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUsersService _userService;
         private readonly IValidator<UserUpdateRequestModel> _validatorUserUpdateRequest;
         private readonly IMapper _mapper;
         private readonly IValidator<User> _validatorUserValidator;
 
-        public UsersController(IUserService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser)
+        public UsersController(IUsersService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser)
         {
             _userService = userService;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;

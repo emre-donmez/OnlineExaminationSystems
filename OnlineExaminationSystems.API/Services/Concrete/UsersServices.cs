@@ -6,11 +6,11 @@ using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Services
 {
-    public class UserService : CrudService<User>, IUserService
+    public class UsersService : CrudService<User>, IUsersService
     {
         private readonly IPasswordHashHelper _passwordHashHelper;
 
-        public UserService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper) : base(repository, mapper)
+        public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper) : base(repository, mapper)
         {
             _passwordHashHelper = passwordHashHelper;
         }

@@ -2,7 +2,7 @@
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
-    public interface IUserService : ICrudService<User>
+    public interface IUsersService : ICrudService<User>
     {
         User CreateUserWithHashedPassword(object updateRequestModel);
 
