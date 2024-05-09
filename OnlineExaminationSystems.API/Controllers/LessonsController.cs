@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos.Lesson;
 using OnlineExaminationSystems.API.Services.Abstract;
 
@@ -9,10 +10,12 @@ namespace OnlineExaminationSystems.API.Controllers
     public class LessonsController : ControllerBase
     {
         private readonly ILessonsService _lessonsService;
+        private readonly IValidator<LessonUpdateRequestModel> _validatorLessonUpdateRequest;
 
-        public LessonsController(ILessonsService lessonsService)
+        public LessonsController(ILessonsService lessonsService,IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest)
         {
             _lessonsService = lessonsService;
+            _validatorLessonUpdateRequest = validatorLessonUpdateRequest;
         }
 
         [HttpGet]
@@ -31,15 +34,25 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(LessonUpdateRequestModel model)
+        public async Task<IActionResult> Create(LessonUpdateRequestModel model)
         {
+            var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
             var lesson = _lessonsService.Create(model);
             return CreatedAtAction(nameof(Get), new { id = lesson.Id }, lesson);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, LessonUpdateRequestModel model)
+        public async Task<IActionResult> Update(int id, LessonUpdateRequestModel model)
         {
+            var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
+
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
             var lesson = _lessonsService.Update(id, model);
             return Ok(lesson);
         }

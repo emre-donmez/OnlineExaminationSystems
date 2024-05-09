@@ -13,11 +13,11 @@ namespace OnlineExaminationSystems.API.Services.Concrete
 
         public async Task<bool> IsAnyUser(int id)
         {
-            var query = $"SELECT 1 FROM Users WHERE id == @Id";
+            var query = $"SELECT 1 FROM Users WHERE id =@Id";
             var parameters = new { Id = id };
 
             var existingUser = _repository.ExecuteQuery(query, parameters);
-            return existingUser.Count() == 0;
+            return existingUser.Count() != 0;
         }
     }
 }

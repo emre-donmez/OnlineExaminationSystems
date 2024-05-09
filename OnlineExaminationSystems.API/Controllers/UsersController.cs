@@ -36,10 +36,7 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var user = _userService.GetById(id);
 
-            if (user == null)
-                return NotFound();
-
-            return Ok(user);
+            return user != null ? Ok(user) : NotFound();
         }
 
         [HttpPost]

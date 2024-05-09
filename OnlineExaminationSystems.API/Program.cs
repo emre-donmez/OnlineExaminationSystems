@@ -1,6 +1,7 @@
 using FluentValidation;
 using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Dtos.Lesson;
 using OnlineExaminationSystems.API.Models.Dtos.User;
 using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Models.Helpers;
@@ -18,6 +19,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IValidator<UserUpdateRequestModel>, UserUpdateRequestModelValidator>();
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
+builder.Services.AddScoped<IValidator<LessonUpdateRequestModel>, LessonUpdateRequestModelValidator>();
 
 builder.Services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
 builder.Services.AddScoped<IUsersService, UsersService>();
