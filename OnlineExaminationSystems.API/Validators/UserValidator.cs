@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using OnlineExaminationSystems.API.Model.Entities;
+using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Validators
 {
     public class UserValidator : AbstractValidator<User>
     {
-        private readonly IUserService _userService;
+        private readonly IUsersService _userService;
 
-        public UserValidator(IUserService userService)
+        public UserValidator(IUsersService userService)
         {
             _userService = userService;
 

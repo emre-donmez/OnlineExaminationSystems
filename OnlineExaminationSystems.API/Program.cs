@@ -1,13 +1,12 @@
 using FluentValidation;
 using OnlineExaminationSystems.API.Data.Context;
-using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Model.Entities;
-using OnlineExaminationSystems.API.Model.Helpers;
-using OnlineExaminationSystems.API.Model.Repository;
-using OnlineExaminationSystems.API.Services;
+using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Entities;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 using OnlineExaminationSystems.API.Services.Concrete;
-using OnlineExaminationSystems.API.Validators.User;
+using OnlineExaminationSystems.API.Validators;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

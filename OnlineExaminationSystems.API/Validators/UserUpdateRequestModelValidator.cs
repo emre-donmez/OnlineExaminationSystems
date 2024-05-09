@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
-using OnlineExaminationSystems.API.Model.Dtos.User;
+using OnlineExaminationSystems.API.Models.Dtos.User;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Validators.User
+namespace OnlineExaminationSystems.API.Validators
 {
     public class UserUpdateRequestModelValidator : AbstractValidator<UserUpdateRequestModel>
     {

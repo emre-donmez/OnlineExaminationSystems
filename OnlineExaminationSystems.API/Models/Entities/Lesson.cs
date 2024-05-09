@@ -1,5 +1,4 @@
-﻿using OnlineExaminationSystems.API.Model.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineExaminationSystems.API.Models.Entities
 {
@@ -9,6 +8,7 @@ namespace OnlineExaminationSystems.API.Models.Entities
         [Column("id")]
         public int Id { get; set; }
         public string Name { get; set; }
+
         [Column("responsible_user_id")]
         public int UserId { get; set; }
     }

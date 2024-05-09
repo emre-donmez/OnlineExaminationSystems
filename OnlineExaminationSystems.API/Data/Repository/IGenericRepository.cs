@@ -1,6 +1,6 @@
-﻿using OnlineExaminationSystems.API.Model.Entities;
+﻿using OnlineExaminationSystems.API.Models.Entities;
 
-namespace OnlineExaminationSystems.API.Model.Repository
+namespace OnlineExaminationSystems.API.Data.Repository
 {
     /// <summary>
     /// Represents a generic repository for managing entities of type T using Dapper.

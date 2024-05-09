@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Model.Entities;
+using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers

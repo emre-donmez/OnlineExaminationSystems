@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Dtos.Lesson;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers

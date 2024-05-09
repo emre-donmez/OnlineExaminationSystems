@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using OnlineExaminationSystems.API.Data.Context;
-using OnlineExaminationSystems.API.Model.Entities;
+using OnlineExaminationSystems.API.Models.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
-namespace OnlineExaminationSystems.API.Model.Repository
+namespace OnlineExaminationSystems.API.Data.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     {

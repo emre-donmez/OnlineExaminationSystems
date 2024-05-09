@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Data.Repository;
 using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 

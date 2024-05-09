@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Dtos.Lesson;
 
 namespace OnlineExaminationSystems.API.Models.Dtos.Mappings
 {

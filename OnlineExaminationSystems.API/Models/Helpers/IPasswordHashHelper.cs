@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.API.Model.Helpers
+﻿namespace OnlineExaminationSystems.API.Models.Helpers
 {
     public interface IPasswordHashHelper
     {

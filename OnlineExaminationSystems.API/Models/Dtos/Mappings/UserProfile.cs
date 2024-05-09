@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using OnlineExaminationSystems.API.Model.Dtos.User;
+using OnlineExaminationSystems.API.Models.Dtos.User;
 
-namespace OnlineExaminationSystems.API.Model.Dtos.Mappings
+namespace OnlineExaminationSystems.API.Models.Dtos.Mappings
 {
     public class UserProfile : Profile
     {
         public UserProfile()
         {
-            this.CreateMap<Entities.User, UserUpdateRequestModel>().ReverseMap();
+            CreateMap<Entities.User, UserUpdateRequestModel>().ReverseMap();
         }
     }
 }

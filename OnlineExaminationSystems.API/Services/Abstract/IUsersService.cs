@@ -1,4 +1,4 @@
-﻿using OnlineExaminationSystems.API.Model.Entities;
+﻿using OnlineExaminationSystems.API.Models.Entities;
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
