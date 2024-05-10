@@ -9,10 +9,7 @@ namespace OnlineExaminationSystems.API.Models.Dtos.Mappings
         {
             CreateMap<Question,QuestionUpdateRequestModel>().ReverseMap();
             CreateMap<Question, QuestionGetResponseModel>()
-                           .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                           .ForMember(dest => dest.QuestionText, opt => opt.MapFrom(src => src.QuestionText))
-                           .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.ExamId))
-                           .ForMember(dest => dest.Options, opt => opt.MapFrom(src => MapOptions(src)));
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => MapOptions(src)));
         }
         private List<string> MapOptions(Question source)
         {
