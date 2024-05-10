@@ -19,8 +19,7 @@ namespace OnlineExaminationSystems.API.Models.Dtos.Mappings
 
         private List<string> Shuffle(List<string> options)
         {
-            var shuffledOptions = options.OrderBy(x => Guid.NewGuid()).ToList();
-            return shuffledOptions;
+           return options.OrderBy(x => Guid.NewGuid()).ToList();           
         }
     }
 }
