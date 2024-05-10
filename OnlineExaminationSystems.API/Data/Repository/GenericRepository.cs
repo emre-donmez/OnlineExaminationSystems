@@ -87,7 +87,7 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
         public IEnumerable<T> GetAll()
         {
-            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE is_del = 0";
+            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName}";
 
             using var connection = _context.CreateConnection();
             var result = connection.Query<T>(query);
@@ -97,7 +97,7 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
         public T? GetById(int id)
         {
-            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE id = {id} AND is_del = 0";
+            var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE id = {id}";
 
             using var connection = _context.CreateConnection();
 
@@ -119,7 +119,7 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
         public T Update(T model)
         {
-            var query = $"UPDATE {_tableName} SET {string.Join(", ", _columnNamesForUpdate)} WHERE id = @Id AND is_del = 0";
+            var query = $"UPDATE {_tableName} SET {string.Join(", ", _columnNamesForUpdate)} WHERE id = @Id";
 
             using var connection = _context.CreateConnection();
 

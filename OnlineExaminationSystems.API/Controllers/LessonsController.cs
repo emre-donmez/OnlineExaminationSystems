@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.API.Models.Dtos.Lesson;
+using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers
@@ -12,7 +12,7 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly ILessonsService _lessonsService;
         private readonly IValidator<LessonUpdateRequestModel> _validatorLessonUpdateRequest;
 
-        public LessonsController(ILessonsService lessonsService,IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest)
+        public LessonsController(ILessonsService lessonsService, IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest)
         {
             _lessonsService = lessonsService;
             _validatorLessonUpdateRequest = validatorLessonUpdateRequest;
@@ -30,7 +30,7 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var lesson = _lessonsService.GetById(id);
 
-           return lesson != null ? Ok(lesson) : NotFound();
+            return lesson != null ? Ok(lesson) : NotFound();
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var result = _lessonsService.Delete(id);
 
-            return result ? Ok() : NotFound(); 
+            return result ? Ok() : NotFound();
         }
     }
 }

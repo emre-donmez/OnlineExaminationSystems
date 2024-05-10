@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
-using OnlineExaminationSystems.API.Models.Dtos.Lesson;
+using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
-using OnlineExaminationSystems.API.Services.Concrete;
 
 namespace OnlineExaminationSystems.API.Validators
 {
     public class LessonUpdateRequestModelValidator : AbstractValidator<LessonUpdateRequestModel>
     {
         private readonly ILessonsService _lessonsService;
+
         public LessonUpdateRequestModelValidator(ILessonsService lessonsService)
         {
             _lessonsService = lessonsService;
