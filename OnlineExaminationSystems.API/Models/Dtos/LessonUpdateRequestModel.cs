@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.API.Models.Dtos.Lesson
+﻿namespace OnlineExaminationSystems.API.Models.Dtos
 {
     public record LessonUpdateRequestModel(string Name, int UserId);
 }
