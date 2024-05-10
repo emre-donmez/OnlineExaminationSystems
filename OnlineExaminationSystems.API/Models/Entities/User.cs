@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlineExaminationSystems.API.Model.Entities
+namespace OnlineExaminationSystems.API.Models.Entities
 {
     [Table("Users")]
     public class User : IEntity

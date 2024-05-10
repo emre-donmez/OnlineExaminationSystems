@@ -1,8 +1,8 @@
-﻿using OnlineExaminationSystems.API.Model.Entities;
+﻿using OnlineExaminationSystems.API.Models.Entities;
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
-    public interface IUserService : ICrudService<User>
+    public interface IUsersService : ICrudService<User>
     {
         User CreateUserWithHashedPassword(object updateRequestModel);
 

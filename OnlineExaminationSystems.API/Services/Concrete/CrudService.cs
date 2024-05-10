@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using OnlineExaminationSystems.API.Model.Entities;
-using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Services
+namespace OnlineExaminationSystems.API.Services.Concrete
 {
     public class CrudService<T> : ICrudService<T> where T : IEntity
     {

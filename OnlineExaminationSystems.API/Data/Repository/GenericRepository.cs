@@ -1,10 +1,10 @@
 ﻿using Dapper;
 using OnlineExaminationSystems.API.Data.Context;
-using OnlineExaminationSystems.API.Model.Entities;
+using OnlineExaminationSystems.API.Models.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
-namespace OnlineExaminationSystems.API.Model.Repository
+namespace OnlineExaminationSystems.API.Data.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     {
@@ -77,11 +77,10 @@ namespace OnlineExaminationSystems.API.Model.Repository
             var query = $"INSERT INTO {_tableName} ({string.Join(',', _columnNamesWithAttribute)}) VALUES (@{string.Join(", @", _columnNames)})" +
                         "SELECT CAST(SCOPE_IDENTITY() as int)";
 
-            using (var connection = _context.CreateConnection())
-            {
-                var id = connection.QuerySingle<int>(query, model);
-                model.Id = id;
-            }
+            using var connection = _context.CreateConnection();
+
+            var id = connection.QuerySingle<int>(query, model);
+            model.Id = id;
 
             return model;
         }
@@ -90,58 +89,52 @@ namespace OnlineExaminationSystems.API.Model.Repository
         {
             var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE is_del = 0";
 
-            using (var connection = _context.CreateConnection())
-            {
-                var result = connection.Query<T>(query);
+            using var connection = _context.CreateConnection();
+            var result = connection.Query<T>(query);
 
-                return result;
-            }
+            return result;
         }
 
         public T? GetById(int id)
         {
             var query = $"SELECT {string.Join(',', _columnNamesForSelection)} FROM {_tableName} WHERE id = {id} AND is_del = 0";
 
-            using (var connection = _context.CreateConnection())
-            {
-                var result = connection.QuerySingleOrDefault<T>(query);
+            using var connection = _context.CreateConnection();
 
-                return result;
-            }
+            var result = connection.QuerySingleOrDefault<T>(query);
+
+            return result;
         }
 
         public bool SoftDelete(int id)
         {
             var query = $"UPDATE {_tableName} SET is_del = 1 WHERE id = {id}";
 
-            using (var connection = _context.CreateConnection())
-            {
-                var result = connection.Execute(query);
+            using var connection = _context.CreateConnection();
 
-                return result > 0 ? true : false;
-            }
+            var result = connection.Execute(query);
+
+            return result > 0 ? true : false;
         }
 
         public T Update(T model)
         {
             var query = $"UPDATE {_tableName} SET {string.Join(", ", _columnNamesForUpdate)} WHERE id = @Id AND is_del = 0";
 
-            using (var connection = _context.CreateConnection())
-            {
-                connection.Execute(query, model);
-            }
+            using var connection = _context.CreateConnection();
+
+            connection.Execute(query, model);
 
             return model;
         }
 
         public IEnumerable<object> ExecuteQuery(string query, object parameters)
         {
-            using (var connection = _context.CreateConnection())
-            {
-                var result = connection.Query(query, parameters);
+            using var connection = _context.CreateConnection();
 
-                return result;
-            }
+            var result = connection.Query(query, parameters);
+
+            return result;
         }
     }
 }

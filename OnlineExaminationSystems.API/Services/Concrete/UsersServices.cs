@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using OnlineExaminationSystems.API.Model.Entities;
-using OnlineExaminationSystems.API.Model.Helpers;
-using OnlineExaminationSystems.API.Model.Repository;
+using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Entities;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Services
+namespace OnlineExaminationSystems.API.Services.Concrete
 {
-    public class UserService : CrudService<User>, IUserService
+    public class UsersService : CrudService<User>, IUsersService
     {
         private readonly IPasswordHashHelper _passwordHashHelper;
 
-        public UserService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper) : base(repository, mapper)
+        public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper) : base(repository, mapper)
         {
             _passwordHashHelper = passwordHashHelper;
         }
@@ -21,14 +21,14 @@ namespace OnlineExaminationSystems.API.Services
 
             user.Password = _passwordHashHelper.HashPassword(user.Password);
 
-            return base.Create(user);
+            return Create(user);
         }
 
         public User UpdateUserWithHashedPassword(User user)
         {
             user.Password = _passwordHashHelper.HashPassword(user.Password);
 
-            return base.Update(user);
+            return Update(user);
         }
 
         public async Task<bool> IsUniqueEmailAsync(string email)

@@ -1,8 +1,8 @@
-﻿namespace OnlineExaminationSystems.API.Model.Helpers
+﻿namespace OnlineExaminationSystems.API.Models.Helpers
 {
     public class PasswordHashHelper : IPasswordHashHelper
     {
-        private readonly String _salt;
+        private readonly string _salt;
 
         public PasswordHashHelper(IConfiguration configuration)
         {

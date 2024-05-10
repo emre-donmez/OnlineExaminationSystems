@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.API.Model.Entities
+﻿namespace OnlineExaminationSystems.API.Models.Entities
 {
     public interface IEntity
     {

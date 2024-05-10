@@ -1,11 +1,12 @@
 using FluentValidation;
 using OnlineExaminationSystems.API.Data.Context;
-using OnlineExaminationSystems.API.Model.Dtos.User;
-using OnlineExaminationSystems.API.Model.Entities;
-using OnlineExaminationSystems.API.Model.Helpers;
-using OnlineExaminationSystems.API.Model.Repository;
-using OnlineExaminationSystems.API.Services;
+using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Dtos.Lesson;
+using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Entities;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
+using OnlineExaminationSystems.API.Services.Concrete;
 using OnlineExaminationSystems.API.Validators;
 using System.Reflection;
 
@@ -18,9 +19,11 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IValidator<UserUpdateRequestModel>, UserUpdateRequestModelValidator>();
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
+builder.Services.AddScoped<IValidator<LessonUpdateRequestModel>, LessonUpdateRequestModelValidator>();
 
 builder.Services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<ILessonsService, LessonsService>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
