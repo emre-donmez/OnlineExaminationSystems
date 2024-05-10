@@ -10,8 +10,10 @@ namespace OnlineExaminationSystems.API.Services.Abstract
 
         T Create(object updateRequestModel);
 
-        bool Delete(int id);
+        bool SoftDelete(int id);
 
         T Update(int id, object updateRequestModel);
+
+        bool Delete(int id);
     }
 }

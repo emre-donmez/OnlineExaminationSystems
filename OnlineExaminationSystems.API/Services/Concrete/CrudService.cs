@@ -27,7 +27,7 @@ namespace OnlineExaminationSystems.API.Services.Concrete
             return _repository.Insert(model);
         }
 
-        public bool Delete(int id)
+        public bool SoftDelete(int id)
         {
             return _repository.SoftDelete(id);
         }
@@ -52,6 +52,11 @@ namespace OnlineExaminationSystems.API.Services.Concrete
         public T Update(T model)
         {
             return _repository.Update(model);
+        }
+
+        public bool Delete(int id)
+        {
+            return _repository.Delete(id);
         }
     }
 }
