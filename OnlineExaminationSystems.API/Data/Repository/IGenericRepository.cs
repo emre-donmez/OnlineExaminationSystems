@@ -49,5 +49,12 @@ namespace OnlineExaminationSystems.API.Data.Repository
         /// <param name="parameters">The parameters to be used in the query.</param>
         /// <returns>An IEnumerable<object> containing the result of the query.</returns>
         IEnumerable<object> ExecuteQuery(string query, object parameters);
+
+        /// <summary>
+        /// Deletes a record from the database table.
+        /// </summary>
+        /// <param name="id">The ID of the record to delete.</param>
+        /// <returns>True if the record is successfully deleted, otherwise false.</returns>
+        bool Delete(int id);
     }
 }

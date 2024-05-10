@@ -136,5 +136,16 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
             return result;
         }
+
+        public bool Delete(int id)
+        {
+            var query = $"DELETE FROM {_tableName} WHERE id = {id}";
+
+            using var connection = _context.CreateConnection();
+
+            var result = connection.Execute(query);
+
+            return result > 0 ? true : false;
+        }
     }
 }
