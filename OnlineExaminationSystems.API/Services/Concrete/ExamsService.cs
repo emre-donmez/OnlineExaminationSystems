@@ -5,9 +5,9 @@ using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Services.Concrete
 {
-    public class RolesService : CrudService<Role>, IRolesService
+    public class ExamsService : CrudService<Exam>, IExamsService
     {
-        public RolesService(IGenericRepository<Role> repository, IMapper mapper) : base(repository, mapper)
+        public ExamsService(IGenericRepository<Exam> repository, IMapper mapper) : base(repository, mapper)
         {
         }
     }

@@ -19,13 +19,7 @@ namespace OnlineExaminationSystems.API.Data.Repository
         {
             _context = context;
             _tableName = GetTableName();
-
-            var (columnNamesWithAttribute, columnNames, columnNamesForSelection, columnNamesForUpdate) = GetColumnNamesAll();
-
-            _columnNamesWithAttribute = columnNamesWithAttribute;
-            _columnNames = columnNames;
-            _columnNamesForSelection = columnNamesForSelection;
-            _columnNamesForUpdate = columnNamesForUpdate;
+            (_columnNamesWithAttribute, _columnNames, _columnNamesForSelection, _columnNamesForUpdate) = GetColumnNamesAll();
         }
 
         private (List<string> columnNamesWithAttribute, List<string> columnNames, List<string> selectionColumns, List<string> columnNamesForUpdate) GetColumnNamesAll()
@@ -128,11 +122,11 @@ namespace OnlineExaminationSystems.API.Data.Repository
             return model;
         }
 
-        public IEnumerable<object> ExecuteQuery(string query, object parameters)
+        public IEnumerable<T> ExecuteQuery(string query, object parameters)
         {
             using var connection = _context.CreateConnection();
 
-            var result = connection.Query(query, parameters);
+            var result = connection.Query<T>(query, parameters);
 
             return result;
         }

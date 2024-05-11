@@ -2,7 +2,7 @@
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
-    public interface IRolesService : ICrudService<Role>
+    public interface IExamsService : ICrudService<Exam>
     {
     }
 }
