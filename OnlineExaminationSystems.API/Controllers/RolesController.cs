@@ -10,12 +10,12 @@ namespace OnlineExaminationSystems.API.Controllers
     public class RolesController : ControllerBase
     {
         private readonly IRolesService _rolesService;
-        private readonly IValidator<RoleUpdateRequestModel> _validatorRoleUpdateRequest;     
+        private readonly IValidator<RoleUpdateRequestModel> _validatorRoleUpdateRequest;
 
         public RolesController(IRolesService rolesService, IValidator<RoleUpdateRequestModel> validatorRoleUpdateRequest)
         {
             _rolesService = rolesService;
-            _validatorRoleUpdateRequest = validatorRoleUpdateRequest;         
+            _validatorRoleUpdateRequest = validatorRoleUpdateRequest;
         }
 
         [HttpGet]

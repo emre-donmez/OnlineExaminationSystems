@@ -128,11 +128,11 @@ namespace OnlineExaminationSystems.API.Data.Repository
             return model;
         }
 
-        public IEnumerable<object> ExecuteQuery(string query, object parameters)
+        public IEnumerable<T> ExecuteQuery(string query, object parameters)
         {
             using var connection = _context.CreateConnection();
 
-            var result = connection.Query(query, parameters);
+            var result = connection.Query<T>(query, parameters);
 
             return result;
         }

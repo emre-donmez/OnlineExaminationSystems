@@ -20,7 +20,7 @@ namespace OnlineExaminationSystems.API.Models.Entities
         [Column("wrong_answer_3")]
         public string Option3 { get; set; }
 
-        [Column("correct_answer")]  
+        [Column("correct_answer")]
         public string CorrectAnswer { get; set; }
 
         [Column("exam_id")]

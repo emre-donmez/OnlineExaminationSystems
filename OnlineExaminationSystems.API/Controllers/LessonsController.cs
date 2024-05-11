@@ -29,7 +29,6 @@ namespace OnlineExaminationSystems.API.Controllers
         public IActionResult Get(int id)
         {
             var lesson = _lessonsService.GetById(id);
-
             return lesson != null ? Ok(lesson) : NotFound();
         }
 
@@ -61,7 +60,6 @@ namespace OnlineExaminationSystems.API.Controllers
         public IActionResult Delete(int id)
         {
             var result = _lessonsService.Delete(id);
-
             return result ? Ok() : NotFound();
         }
     }

@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
-using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers
@@ -13,7 +12,7 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly IQuestionsService _questionsService;
         private readonly IValidator<QuestionUpdateRequestModel> _validatorQuestionUpdateRequest;
 
-        public QuestionsController(IQuestionsService questionsService,IValidator<QuestionUpdateRequestModel> validatorQuestionUpdateRequest)
+        public QuestionsController(IQuestionsService questionsService, IValidator<QuestionUpdateRequestModel> validatorQuestionUpdateRequest)
         {
             _questionsService = questionsService;
             _validatorQuestionUpdateRequest = validatorQuestionUpdateRequest;
