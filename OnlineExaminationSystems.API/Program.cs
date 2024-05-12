@@ -23,6 +23,7 @@ builder.Services.AddScoped<IValidator<RoleUpdateRequestModel>, RoleUpdateRequest
 builder.Services.AddScoped<IValidator<LessonUpdateRequestModel>, LessonUpdateRequestModelValidator>();
 builder.Services.AddScoped<IValidator<QuestionUpdateRequestModel>, QuestionUpdateRequestModelValidator>();
 builder.Services.AddScoped<IValidator<ExamUpdateRequestModel>, ExamUpdateRequestModelValidator>();
+builder.Services.AddScoped<IValidator<ResultUpdateRequestModel>, ResultUpdateRequestModelValidator>();
 
 builder.Services.AddScoped<IPasswordHashHelper, PasswordHashHelper>();
 builder.Services.AddScoped<IUsersService, UsersService>();
@@ -30,6 +31,8 @@ builder.Services.AddScoped<IRolesService, RolesService>();
 builder.Services.AddScoped<ILessonsService, LessonsService>();
 builder.Services.AddScoped<IQuestionsService, QuestionsService>();
 builder.Services.AddScoped<IExamsService, ExamsService>();
+builder.Services.AddScoped<IResultsService, ResultsService>();
+
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
