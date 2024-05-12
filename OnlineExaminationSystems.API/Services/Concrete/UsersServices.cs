@@ -9,10 +9,12 @@ namespace OnlineExaminationSystems.API.Services.Concrete
     public class UsersService : CrudService<User>, IUsersService
     {
         private readonly IPasswordHashHelper _passwordHashHelper;
+        private readonly IAuthHelper _authHelper;
 
-        public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper) : base(repository, mapper)
+        public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper, IAuthHelper authHelper) : base(repository, mapper)
         {
             _passwordHashHelper = passwordHashHelper;
+            _authHelper = authHelper;
         }
 
         public User CreateUserWithHashedPassword(object updateRequestModel)
@@ -47,6 +49,18 @@ namespace OnlineExaminationSystems.API.Services.Concrete
 
             var existingUser = _repository.ExecuteQuery(query, parameters);
             return existingUser.Count() == 0;
+        }
+
+        public string? Authenticate(string email, string password)
+        {
+            password = _passwordHashHelper.HashPassword(password);
+
+            var query = $"SELECT id AS Id,Name,Surname,Email,Password,role_id AS RoleId FROM USERS WHERE email = @Email and password = @Password";
+            var parameters = new { Email = email, Password = password };
+
+            var user = _repository.ExecuteQueryFirstOrDefault(query, parameters);
+
+            return user != null ? _authHelper.GenerateJWTToken(user) : null;
         }
     }
 }

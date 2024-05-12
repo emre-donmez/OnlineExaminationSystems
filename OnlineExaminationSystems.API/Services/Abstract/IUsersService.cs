@@ -4,6 +4,7 @@ namespace OnlineExaminationSystems.API.Services.Abstract
 {
     public interface IUsersService : ICrudService<User>
     {
+        string? Authenticate(string email, string password);
         User CreateUserWithHashedPassword(object updateRequestModel);
 
         Task<bool> IsUniqueEmailAsync(string email);
