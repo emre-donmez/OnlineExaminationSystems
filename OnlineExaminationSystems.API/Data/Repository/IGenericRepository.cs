@@ -42,6 +42,12 @@ namespace OnlineExaminationSystems.API.Data.Repository
         /// <returns>True if the record is successfully soft deleted, otherwise false.</returns>
         bool SoftDelete(int id);
 
+        /// <summary>
+        /// Executes a custom query and returns the result.
+        /// </summary>
+        /// <param name="query">The SQL query to execute.</param>
+        /// <param name="parameters">The parameters to pass to the query.</param>
+        /// <returns>An IEnumerable collection of query results.</returns>
         IEnumerable<T> ExecuteQuery(string query, object parameters);
 
         /// <summary>
@@ -50,5 +56,13 @@ namespace OnlineExaminationSystems.API.Data.Repository
         /// <param name="id">The ID of the record to delete.</param>
         /// <returns>True if the record is successfully deleted, otherwise false.</returns>
         bool Delete(int id);
+
+        /// <summary>
+        /// Executes a custom query and returns the first result, or default value if no result is found.
+        /// </summary>
+        /// <param name="query">The SQL query to execute.</param>
+        /// <param name="parameters">The parameters to pass to the query.</param>
+        /// <returns>The first query result or default value if not found.</returns>
+        T ExecuteQueryFirstOrDefault(string query, object parameters);
     }
 }

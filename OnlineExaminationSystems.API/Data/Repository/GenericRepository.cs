@@ -95,7 +95,7 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
             using var connection = _context.CreateConnection();
 
-            var result = connection.QuerySingleOrDefault<T>(query);
+            var result = connection.QueryFirstOrDefault<T>(query);
 
             return result;
         }
@@ -127,6 +127,15 @@ namespace OnlineExaminationSystems.API.Data.Repository
             using var connection = _context.CreateConnection();
 
             var result = connection.Query<T>(query, parameters);
+
+            return result;
+        }
+
+        public T ExecuteQueryFirstOrDefault(string query, object parameters)
+        {
+            using var connection = _context.CreateConnection();
+
+            var result = connection.QueryFirstOrDefault<T>(query, parameters);
 
             return result;
         }
