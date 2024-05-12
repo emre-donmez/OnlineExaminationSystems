@@ -36,6 +36,8 @@ builder.Services.AddScoped<IRolesService, RolesService>();
 builder.Services.AddScoped<ILessonsService, LessonsService>();
 builder.Services.AddScoped<IQuestionsService, QuestionsService>();
 builder.Services.AddScoped<IExamsService, ExamsService>();
+builder.Services.AddScoped<IResultsService, ResultsService>();
+builder.Services.AddScoped<IAuthHelper, AuthHelper>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
