@@ -10,7 +10,7 @@ namespace OnlineExaminationSystems.API.Services.Abstract
         Task<bool> IsUniqueEmailAsync(string email);
 
         Task<bool> IsUniqueEmailAsync(int id, string email);
-
+        string? Refresh(string token);
         User UpdateUserWithHashedPassword(User user);
     }
 }
