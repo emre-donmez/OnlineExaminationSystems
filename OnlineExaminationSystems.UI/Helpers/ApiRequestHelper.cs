@@ -64,7 +64,12 @@ namespace OnlineExaminationSystems.UI.Helpers
             if (typeof(T) == typeof(string))
                 return (T)(object)responseData;
 
-            return JsonSerializer.Deserialize<T>(responseData);
+            var jsonSerializerOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<T>(responseData,jsonSerializerOptions);
         }
 
         private static StringContent CreateStringContent(object data)
