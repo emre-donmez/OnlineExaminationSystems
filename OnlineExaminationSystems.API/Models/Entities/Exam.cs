@@ -7,6 +7,7 @@ namespace OnlineExaminationSystems.API.Models.Entities
     {
         [Column("id")]
         public int Id { get; set; }
+        public string Name { get; set; }
 
         [Column("lesson_id")]
         public int LessonId { get; set; }
