@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <h2>Sınav</h2>
+    <form>
+        @foreach (var question in Model)
+        {
+            <div class="question">
+                <p>@question.Text</p>
+                <ul>
+                    @foreach (var option in question.Options)
+                    {
+                        <li>
+                            <label>
+                                <input type="radio" name="@question.Id" value="@option.Value"> @option.Text
+                            </label>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        <button type="submit">Sınavı Bitir</button>
+    </form>
+}
