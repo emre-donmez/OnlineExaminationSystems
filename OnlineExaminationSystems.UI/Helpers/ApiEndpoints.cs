@@ -10,5 +10,7 @@
         public const string LoginEndpoint = AuthEndpoint + "Login";
 
 
+        public const string ExamEndpoint = BaseEndpoint + "Exams";
+
     }
 }
