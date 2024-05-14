@@ -62,5 +62,10 @@ namespace OnlineExaminationSystems.API.Services.Concrete
 
             return user != null ? _authHelper.GenerateJWTToken(user) : null;
         }
+
+        public string? Refresh(string token)
+        {
+            return _authHelper.RefreshJWTToken(token);
+        }
     }
 }

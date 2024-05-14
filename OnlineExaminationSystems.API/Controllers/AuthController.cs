@@ -32,5 +32,13 @@ namespace OnlineExaminationSystems.API.Controllers
 
             return token == null ? Unauthorized() : Ok(token);
         }
+
+        [HttpPost("Refresh")]
+        public async Task<IActionResult> Refresh(string token)
+        {
+            var refreshToken = _userService.Refresh(token);
+
+            return refreshToken == null ? Unauthorized() : Ok(token);
+        }
     }
 }
