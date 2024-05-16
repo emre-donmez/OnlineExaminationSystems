@@ -66,44 +66,17 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet("{examId}/questions")]
-        public IActionResult GetQuestions(int examId)
+        public IActionResult GetQuestionsByExamId(int examId)
         {
             var questions = _questionsService.GetQuestionsByExamId(examId);
             return Ok(questions);
         }
 
-        //add question to exam
-        //[HttpPost("{examId}/questions")]
-        //public async Task<IActionResult> AddQuestion(int examId, QuestionUpdateRequestModel model)
-        //{
-        //    var validationResult = await _validatorExamUpdateRequestModel.ValidateAsync(model);
-
-        //    if (!validationResult.IsValid)
-        //        return BadRequest(validationResult.Errors);
-
-        //    var question = _examsService.AddQuestion(examId, model);
-        //    return CreatedAtAction(nameof(GetQuestions), new { examId = examId }, question);
-        //}
-
-        ////update question
-        //[HttpPut("{examId}/questions/{questionId}")]
-        //public async Task<IActionResult> UpdateQuestion(int examId, int questionId, QuestionUpdateRequestModel model)
-        //{
-        //    var validationResult = await _validatorExamUpdateRequestModel.ValidateAsync(model);
-
-        //    if (!validationResult.IsValid)
-        //        return BadRequest(validationResult.Errors);
-
-        //    var question = _examsService.UpdateQuestion(examId, questionId, model);
-        //    return Ok(question);
-        //}
-
-        ////delete question
-        //[HttpDelete("{examId}/questions/{questionId}")]
-        //public IActionResult DeleteQuestion(int examId, int questionId)
-        //{
-        //    _examsService.DeleteQuestion(examId, questionId);
-        //    return NoContent();
-        //}
+        [HttpGet("{examId}/start")]
+        public IActionResult GetQuestionsByExamIdForExam(int examId)
+        {
+            var questions = _questionsService.GetQuestionsByExamIdForExam(examId);
+            return Ok(questions);
+        }      
     }
 }

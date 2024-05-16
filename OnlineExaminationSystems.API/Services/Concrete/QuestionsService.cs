@@ -12,21 +12,19 @@ namespace OnlineExaminationSystems.API.Services.Concrete
         {
         }
 
-        public new IEnumerable<QuestionGetResponseModel> GetAll()
+        public IEnumerable<Question> GetQuestionsByExamId(int examId)
         {
-            var questions = _repository.GetAll();
-            return _mapper.Map<IEnumerable<QuestionGetResponseModel>>(questions);
+            var query = "SELECT id AS Id,question_text AS QuestionText,wrong_answer_1 AS Option1,wrong_answer_2 AS Option2,wrong_answer_3 AS Option3,correct_answer AS CorrectAnswer,exam_id AS ExamId FROM Questions where exam_id =@ExamId";
+
+            var parameters = new { ExamId = examId };
+            var questions = _repository.ExecuteQuery(query, parameters);
+
+            return questions;
         }
 
-        public new QuestionGetResponseModel GetById(int id)
+        public IEnumerable<QuestionGetResponseModel> GetQuestionsByExamIdForExam(int examId)
         {
-            var question = _repository.GetById(id);
-            return _mapper.Map<QuestionGetResponseModel>(question);
-        }
-
-        public IEnumerable<QuestionGetResponseModel> GetQuestionsByExamId(int examId)
-        {
-            var query = "SELECT TOP (SELECT question_count FROM exams WHERE id = @ExamId) id AS Id,question_text AS QuestionText,wrong_answer_1 AS Option1,wrong_answer_2 AS Option2,wrong_answer_3 AS Option3,correct_answer AS CorrectAnswer,exam_id AS ExamId FROM Questions where exam_id =@ExamId ORDER BY NEWID()";
+            var query = "SELECT TOP (SELECT CASE WHEN EXISTS (SELECT 1 FROM exams WHERE id = @ExamId) THEN (SELECT question_count FROM exams WHERE id = @ExamId) ELSE 0  END)  id AS Id,question_text AS QuestionText,wrong_answer_1 AS Option1,wrong_answer_2 AS Option2,wrong_answer_3 AS Option3,correct_answer AS CorrectAnswer,exam_id AS ExamId FROM Questions where exam_id =@ExamId ORDER BY NEWID()";
 
             var parameters = new { ExamId = examId };
             var questions = _repository.ExecuteQuery(query, parameters);
