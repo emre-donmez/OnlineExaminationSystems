@@ -10,7 +10,10 @@
         public const string LoginEndpoint = AuthEndpoint + "Login";
 
 
-        public const string ExamEndpoint = BaseEndpoint + "Exams";
+        public const string ExamEndpoint = BaseEndpoint + "Exams/";
+        public static string GetQuestionsByExamId(int examId) => $"{ExamEndpoint}{examId}/Questions";
+
+        public const string QuestionEndpoint = BaseEndpoint + "Questions";
 
     }
 }

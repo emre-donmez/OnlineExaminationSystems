@@ -33,6 +33,17 @@ namespace OnlineExaminationSystems.UI.Controllers
             var exams = await _apiRequestHelper.PostAsync<Exam>(ApiEndpoints.ExamEndpoint,exam);
             return RedirectToAction("Exams");
         }
+       
+        public async Task<IActionResult> Edit(int id)
+        {
+            var exam = await _apiRequestHelper.GetAsync<Exam>($"{ApiEndpoints.ExamEndpoint}/{id}");
+            return View(exam);
+        }
+        public async Task<IActionResult> Questions(int examId)
+        {
+            var questions = await _apiRequestHelper.GetAsync<IEnumerable<Question>>(ApiEndpoints.GetQuestionsByExamId(examId));
+            return View(questions);
+        }
 
     }
 }

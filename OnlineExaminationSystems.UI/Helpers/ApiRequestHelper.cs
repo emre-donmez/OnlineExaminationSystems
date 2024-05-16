@@ -69,7 +69,7 @@ namespace OnlineExaminationSystems.UI.Helpers
                 PropertyNameCaseInsensitive = true
             };
 
-            return JsonSerializer.Deserialize<T>(responseData, jsonSerializerOptions);
+            return JsonSerializer.Deserialize<T>(responseData,jsonSerializerOptions);
         }
 
         private static StringContent CreateStringContent(object data)
