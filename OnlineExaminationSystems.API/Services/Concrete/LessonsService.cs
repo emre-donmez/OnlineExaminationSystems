@@ -11,6 +11,14 @@ namespace OnlineExaminationSystems.API.Services.Concrete
         {
         }
 
+        public IEnumerable<Lesson> GetLessonsByUserId(int userId)
+        {
+            var query = $"SELECT id AS Id,Name,responsible_user_id AS UserId FROM Lessons WHERE responsible_user_id =@UserId";
+            var parameters = new { UserId = userId };
+
+            return _repository.ExecuteQuery(query, parameters);
+        }
+
         public async Task<bool> IsAnyUser(int id)
         {
             var query = $"SELECT 1 FROM Users WHERE id =@Id";

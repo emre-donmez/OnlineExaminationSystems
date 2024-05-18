@@ -15,13 +15,15 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly IValidator<UserUpdateRequestModel> _validatorUserUpdateRequest;
         private readonly IMapper _mapper;
         private readonly IValidator<User> _validatorUserValidator;
+        private readonly ILessonsService _lessonsService;
 
-        public UsersController(IUsersService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser)
+        public UsersController(IUsersService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser, ILessonsService lessonsService)
         {
             _userService = userService;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;
             _validatorUserValidator = validatorUser;
             _mapper = mapper;
+            _lessonsService = lessonsService;
         }
 
         [HttpGet]
@@ -73,6 +75,14 @@ namespace OnlineExaminationSystems.API.Controllers
             var result = _userService.SoftDelete(id);
             return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
+
+        [HttpGet("{id}/lessons")]
+        public IActionResult GetLessonsByUserId(int id)
+        {
+            var lessons = _lessonsService.GetLessonsByUserId(id);
+            return Ok(lessons);
+        }
+
 
         //[HttpPatch("{id}")]
         //public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)
