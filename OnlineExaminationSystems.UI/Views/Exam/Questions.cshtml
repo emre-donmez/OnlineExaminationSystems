@@ -6,70 +6,38 @@
 
 <h1>Questions</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CorrectAnswer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WrongAnswer1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WrongAnswer2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WrongAnswer3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExamId)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.QuestionText)</th>
+            <th>@Html.DisplayNameFor(model => model.CorrectAnswer)</th>
+            <th>@Html.DisplayNameFor(model => model.Option1)</th>
+            <th>@Html.DisplayNameFor(model => model.Option2)</th>
+            <th>@Html.DisplayNameFor(model => model.Option3)</th>
+            <th>@Html.DisplayNameFor(model => model.ExamId)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CorrectAnswer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WrongAnswer1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WrongAnswer2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WrongAnswer3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExamId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    <tr>
-        <td colspan="8">
-            <a asp-action="Create" class="btn btn-primary">Create New Question</a>
-        </td>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.QuestionText)</td>
+                <td>@Html.DisplayFor(modelItem => item.CorrectAnswer)</td>
+                <td>@Html.DisplayFor(modelItem => item.Option1)</td>
+                <td>@Html.DisplayFor(modelItem => item.Option2)</td>
+                <td>@Html.DisplayFor(modelItem => item.Option3)</td>
+                <td>@Html.DisplayFor(modelItem => item.ExamId)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a asp-action="CreateQuestion" class="btn btn-primary">Create New</a>
+

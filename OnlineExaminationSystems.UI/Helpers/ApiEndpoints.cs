@@ -9,11 +9,17 @@
         public const string AuthEndpoint = BaseEndpoint + "Auth/";
         public const string LoginEndpoint = AuthEndpoint + "Login";
 
-
-        public const string ExamEndpoint = BaseEndpoint + "Exams/";
-        public static string GetQuestionsByExamId(int examId) => $"{ExamEndpoint}{examId}/Questions";
+        public const string LessonEndpoint = BaseEndpoint + "Lessons";
+        public const string ExamEndpoint = BaseEndpoint + "Exams";
+        public static string GetExamsByLessonIdEndPoint(int lessonId) => $"{LessonEndpoint}/{lessonId}/Exams";
+        public static string GetQuestionsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Questions";
+        public static string GetQuestionsByExamIdForExam(int examId) => $"{ExamEndpoint}/{examId}/Start";
 
         public const string QuestionEndpoint = BaseEndpoint + "Questions";
+
+        
+
+
 
     }
 }
