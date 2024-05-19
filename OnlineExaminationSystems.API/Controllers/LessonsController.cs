@@ -11,11 +11,13 @@ namespace OnlineExaminationSystems.API.Controllers
     {
         private readonly ILessonsService _lessonsService;
         private readonly IValidator<LessonUpdateRequestModel> _validatorLessonUpdateRequest;
+        private readonly IExamsService _examsService;
 
-        public LessonsController(ILessonsService lessonsService, IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest)
+        public LessonsController(ILessonsService lessonsService, IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest, IExamsService examsService)
         {
             _lessonsService = lessonsService;
             _validatorLessonUpdateRequest = validatorLessonUpdateRequest;
+            _examsService = examsService;
         }
 
         [HttpGet]
@@ -61,6 +63,13 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var result = _lessonsService.Delete(id);
             return result ? Ok() : NotFound();
+        }
+
+        [HttpGet("{id}/exams")]
+        public IActionResult GetExamsByLessonId(int id)
+        {
+            var exams = _examsService.GetExamsByLessonId(id);
+            return Ok(exams);
         }
     }
 }

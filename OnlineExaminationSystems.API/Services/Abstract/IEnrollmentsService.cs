@@ -2,8 +2,7 @@
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
-    public interface IExamsService : ICrudService<Exam>
+    public interface IEnrollmentsService : ICrudService<Enrollment>
     {
-        IEnumerable<Exam> GetExamsByLessonId(int lessonId);
     }
 }

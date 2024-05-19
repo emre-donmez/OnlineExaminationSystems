@@ -9,6 +9,17 @@ namespace OnlineExaminationSystems.API.Services.Concrete
     {
         public ExamsService(IGenericRepository<Exam> repository, IMapper mapper) : base(repository, mapper)
         {
+
+        }
+
+        public IEnumerable<Exam> GetExamsByLessonId(int lessonId)
+        {
+            var query = "SELECT id AS Id,Name,lesson_id AS LessonId,question_count AS QuestionCount,Duration,started_date AS StartedDate FROM Exams WHERE lesson_id=@LessonId";
+
+            var parameters = new { LessonId = lessonId };
+            var exams = _repository.ExecuteQuery(query, parameters);
+
+            return exams;
         }
     }
 }
