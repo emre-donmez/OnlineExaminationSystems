@@ -72,7 +72,7 @@ namespace OnlineExaminationSystems.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = _userService.SoftDelete(id);
+            var result = _userService.Delete(id);
             return result ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
 
