@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.User>
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.User.User>
 
 <link rel="stylesheet" href="/css/user.css" />
 
@@ -34,7 +34,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Role.Name)</td>
                 <td>
                     <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.Name', '@item.Surname', '@item.Email', '@item.Password', '@item.RoleId')">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteUser('@item.Id')">Delete</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteEntity('@item.Id')">Delete</button>
                 </td>
             </tr>
         }
@@ -86,6 +86,5 @@
         </div>
     </div>
 </div>
-
 
 <script src="~/js/user.js"></script>

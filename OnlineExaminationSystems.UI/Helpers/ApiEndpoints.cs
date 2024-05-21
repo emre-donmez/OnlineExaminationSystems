@@ -12,5 +12,8 @@
 
         public const string RoleEndpoint = BaseEndpoint + "Roles";
 
+        public const string LessonEndpoint = BaseEndpoint + "Lessons";
+
+
     }
 }
