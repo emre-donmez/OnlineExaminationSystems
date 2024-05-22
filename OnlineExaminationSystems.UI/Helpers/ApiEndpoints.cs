@@ -11,13 +11,20 @@
 
         public const string LessonEndpoint = BaseEndpoint + "Lessons";
         public const string ExamEndpoint = BaseEndpoint + "Exams";
+
+        public static string GetExamById(int examId) => $"{ExamEndpoint}/{examId}";
         public static string GetExamsByLessonIdEndPoint(int lessonId) => $"{LessonEndpoint}/{lessonId}/Exams";
         public static string GetQuestionsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Questions";
         public static string GetQuestionsByExamIdForExam(int examId) => $"{ExamEndpoint}/{examId}/Start";
 
+        public static string AnswerEndPoint = BaseEndpoint + "Answers";
+
         public const string QuestionEndpoint = BaseEndpoint + "Questions";
 
-        
+
+
+
+
 
 
 

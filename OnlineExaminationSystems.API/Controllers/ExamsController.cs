@@ -77,6 +77,6 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var questions = _questionsService.GetQuestionsByExamIdForExam(examId);
             return Ok(questions);
-        }      
+        }
     }
 }

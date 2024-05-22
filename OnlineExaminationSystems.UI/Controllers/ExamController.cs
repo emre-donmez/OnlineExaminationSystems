@@ -65,9 +65,14 @@ namespace OnlineExaminationSystems.UI.Controllers
 
         public async Task<IActionResult> Exam(int ExamId)
         {
-            var questions= await _apiRequestHelper.GetAsync<QuestionForExam>(ApiEndpoints.QuestionEndpoint,ExamId);
+            var questions= await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.QuestionEndpoint,ExamId);
             return View(questions);
         }
+
+
+
+
+       
 
 
     }
