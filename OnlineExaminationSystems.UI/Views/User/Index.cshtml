@@ -1,0 +1,91 @@
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.User>
+
+<link rel="stylesheet" href="/css/user.css" />
+
+<h1 class="my-4">User List</h1>
+
+<button class="btn btn-primary" onclick="openCreateModal()">Create User</button>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Surname)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.Password)</th>
+            <th>@Html.DisplayNameFor(model => model.Role)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Surname)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>
+                    <span class="password" onclick="togglePassword(this)" data-password="@item.Password">
+                        ●●●●●●
+                    </span>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Role.Name)</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.Name', '@item.Surname', '@item.Email', '@item.Password', '@item.RoleId')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteUser('@item.Id')">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="editId" name="id" />
+                    <div class="form-group">
+                        <label for="editName">Name:</label>
+                        <input type="text" class="form-control" id="editName" name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editSurname">Surname:</label>
+                        <input type="text" class="form-control" id="editSurname" name="surname" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" class="form-control" id="editEmail" name="email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Password:</label>
+                        <input class="form-control" id="editPassword" name="password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editRoleId">Role</label>
+                        <select class="form-control form-select" id="editRoleId" name="roleId">
+                            @foreach (var role in ViewBag.Roles)
+                            {
+                                <option value="@role.Id">@role.Name</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save-button">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/user.js"></script>
