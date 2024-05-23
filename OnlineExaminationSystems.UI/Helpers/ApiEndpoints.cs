@@ -10,7 +10,7 @@
         public const string AuthEndpoint = BaseEndpoint + "Auth/";
         public const string LoginEndpoint = AuthEndpoint + "Login";
 
-        public const string RoleEndpoint = BaseEndpoint + "Roles";
+
         public const string LessonEndpoint = BaseEndpoint + "Lessons";
         public const string ExamEndpoint = BaseEndpoint + "Exams";
 
@@ -23,12 +23,6 @@
 
         public const string QuestionEndpoint = BaseEndpoint + "Questions";
 
-
-
-
-
-
-
-
+        public const string RoleEndpoint = BaseEndpoint + "Roles";
     }
 }

@@ -15,6 +15,7 @@ namespace OnlineExaminationSystems.UI.Controllers
         {
             _apiRequestHelper = apiRequestHelper;
         }
+
         public async Task<IActionResult> Lessons()
         {
             var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.LessonEndpoint);
