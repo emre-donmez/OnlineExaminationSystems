@@ -3,6 +3,7 @@
     document.getElementById('save-button').onclick = saveEdit;
     $('#editId').val(id);
     $('#editName').val(name);
+    $('#editUserId').val(userId);
     $('#editModal').modal('show');
 }
 
@@ -10,12 +11,9 @@ function saveEdit() {
     var data = {
         Id: $('#editId').val(),
         Name: $('#editName').val(),
-        Surname: $('#editSurname').val(),
-        Email: $('#editEmail').val(),
-        Password: $('#editPassword').val(),
-        RoleId: $('#editRoleId').val()
+        UserId: $('#editUserId').val()
     };
-    fetch('/User/Edit', {
+    fetch('/Lesson/Edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -26,14 +24,14 @@ function saveEdit() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            toastr.success('User successfully edited!');
+            toastr.success('Lesson successfully edited!');
             setTimeout(() => {
                 window.location.reload();
             }, 2500);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
-            toastr.error('An error occurred while editing user.');
+            toastr.error('An error occurred while editing lesson.');
         });
 }
 
@@ -42,16 +40,14 @@ function openCreateModal() {
     document.getElementById('save-button').onclick = saveCreate;
     $('#editId').val('');
     $('#editName').val('');
+    $('#editUserId').val('');
     $('#editModal').modal('show');
 }
 
 function saveCreate() {
     var data = {
         Name: $('#editName').val(),
-        Surname: $('#editSurname').val(),
-        Email: $('#editEmail').val(),
-        Password: $('#editPassword').val(),
-        RoleId: $('#editRoleId').val()
+        UserId: $('#editUserId').val()       
     };
     fetch('/Lesson/Create', {
         method: 'POST',
@@ -71,7 +67,7 @@ function saveCreate() {
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
-            toastr.error('An error occurred while creating user.');
+            toastr.error('An error occurred while creating lesson.');
         });
 }
 

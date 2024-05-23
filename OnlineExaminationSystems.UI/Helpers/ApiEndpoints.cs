@@ -13,6 +13,8 @@
         public const string RoleEndpoint = BaseEndpoint + "Roles";
 
         public const string LessonEndpoint = BaseEndpoint + "Lessons";
+        public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";
+
 
 
     }
