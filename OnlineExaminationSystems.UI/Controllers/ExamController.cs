@@ -16,12 +16,7 @@ namespace OnlineExaminationSystems.UI.Controllers
             _apiRequestHelper = apiRequestHelper;
         }
 
-        public async Task<IActionResult> Lessons()
-        {
-            var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.LessonEndpoint);
-            return View(lessons);
-        }
-
+        [Route("Exams")]
         public async Task<IActionResult> Exams(int lessonId)
         {
             var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
@@ -39,29 +34,19 @@ namespace OnlineExaminationSystems.UI.Controllers
             var exams = await _apiRequestHelper.PostAsync<Exam>(ApiEndpoints.ExamEndpoint,exam);
             return RedirectToAction("Exams");
         }
-       
-        public async Task<IActionResult> Edit(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] Exam model)
         {
-            var exam = await _apiRequestHelper.GetAsync<Exam>($"{ApiEndpoints.ExamEndpoint}/{id}");
-            return View(exam);
+            var response = await _apiRequestHelper.PutAsync<Exam>(ApiEndpoints.GetExamById(model.Id), model);
+            return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Questions(int examId)
-        {
-            var questions = await _apiRequestHelper.GetAsync<IEnumerable<Question>>(ApiEndpoints.GetQuestionsByExamIdEndPoint(examId));
-            return View(questions);
-        }
-        public async Task<IActionResult> CreateQuestion(int examId)
-        {
-            ViewBag.ExamId = examId;
-            return View();
-        }
         [HttpPost]
-        public async Task<IActionResult> CreateQuestion(QuestionUpdateRequestModel question)
+        public async Task<IActionResult> Delete([FromBody] ExamDeleteRequest model)
         {
-            var createQuestion = await _apiRequestHelper.PostAsync<Question>(ApiEndpoints.QuestionEndpoint, question);
-            return RedirectToAction("Questions", new {examId=question.ExamId});
+            var response = await _apiRequestHelper.DeleteAsync(ApiEndpoints.GetExamById(model.Id));
+            return response ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         public async Task<IActionResult> Exam(int ExamId)
@@ -69,6 +54,8 @@ namespace OnlineExaminationSystems.UI.Controllers
             var questions= await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.QuestionEndpoint,ExamId);
             return View(questions);
         }
+
+
 
 
 

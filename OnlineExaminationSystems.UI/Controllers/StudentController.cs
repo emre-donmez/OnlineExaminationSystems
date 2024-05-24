@@ -13,7 +13,7 @@ namespace OnlineExaminationSystems.UI.Controllers
         {
             _apiRequestHelper = apiRequestHelper;
         }
-        [HttpGet]
+        [Route("ExamPage")]
         public async Task<IActionResult> ExamPage(int examId)
         {
             var exam = await _apiRequestHelper.GetAsync<Exam>(ApiEndpoints.GetExamById(examId));
