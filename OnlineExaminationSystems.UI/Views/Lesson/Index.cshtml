@@ -23,6 +23,7 @@
                 <td>
                     <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.Name', '@item.UserId')">Edit</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteEntity('@item.Id')">Delete</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openStudentsModal('@item.Id')">Students</button>
                 </td>
             </tr>
         }
@@ -62,6 +63,33 @@
             </div>
         </div>
     </div>
+</div>
+@{
+    var jsonUsers = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Users);
+}
+<div id="users" data-users="@jsonUsers"></div>
+
+<!-- Student Modal -->
+<div class="modal fade" id="studentsModal" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="studentsModalLabel">Students</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-container"> 
+            
+              
+        </div>
+        <button type="button" class="btn btn-primary mt-2" onclick="createSelect()">New Student</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save-student-modal-button">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="~/js/lesson.js"></script>
