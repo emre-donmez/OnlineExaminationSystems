@@ -1,45 +1,4 @@
-document.getElementById('exam-end-button').addEventListener('click', function () {
-    const radioButtons = document.querySelectorAll('.form-check-input[type="radio"]:checked');
-    const userId = document.getElementById('userId').value;
-    let answers = [];
-
-    radioButtons.forEach(radio => {
-        const questionId = radio.getAttribute('data-question-id');
-        const selectedAnswer = radio.value;
-        answers.push(new Answer(userId, questionId, selectedAnswer));
-    });
-
-    fetch('/Student/SubmitExam', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(answers)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            toastr.success('Exam done!');
-            setTimeout(() => {
-                window.location.reload();
-            }, 2500);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-            toastr.error('An error occurred while submitting exam.');
-        });
-});
-
-class Answer{
-    constructor(userId, questionId, givenAnswer) {
-        this.userId = userId;
-        this.questionId = questionId;
-        this.givenAnswer = givenAnswer;
-    }
-};
-
-function openEditModal(id,name,lessonId,questionCount,duration,startedDate) {
+function openEditModal(id, name, lessonId, questionCount, duration, startedDate) {
     document.getElementById('editModalLabel').innerText = 'Edit Exam';
     document.getElementById('save-button').onclick = saveEdit;
     $('#editId').val(id);
@@ -47,9 +6,11 @@ function openEditModal(id,name,lessonId,questionCount,duration,startedDate) {
     $('#editLessonId').val(lessonId);
     $('#editQuestionCount').val(questionCount);
     $('#editDuration').val(duration);
-    $('#editStartDate').val(new Date(startedDate).toISOString().split('T')[0]);
+    $('#editStartDate').val(startedDate.substring(0, 10)); // Extract date part
+    $('#editStartTime').val(startedDate.substring(11, 16)); // Extract time part
     $('#editModal').modal('show');
 }
+
 function saveEdit() {
     var data = {
         Id: $('#editId').val(),
@@ -57,8 +18,9 @@ function saveEdit() {
         LessonId: $('#editLessonId').val(),
         QuestionCount: $('#editQuestionCount').val(),
         Duration: $('#editDuration').val(),
-        StartedDate: $('#editStartDate').val()
+        StartedDate: $('#editStartDate').val() + 'T' + $('#editStartTime').val() + ':00'
     };
+
     fetch('/Exam/Edit', {
         method: 'POST',
         headers: {
@@ -66,16 +28,19 @@ function saveEdit() {
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                $('#editModal').modal('hide');
-                location.reload(); 
-            } else { 
-                alert('Error: ' + data.message);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            toastr.success('Exam successfully edited!');
+            setTimeout(() => {
+                window.location.reload();
+            }, 2500);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            toastr.error('An error occurred while editing exam.');
+        });
 }
 
 function deleteExam(id) {
@@ -102,5 +67,3 @@ function deleteExam(id) {
             toastr.error('An error occurred while deleting exam.');
         });
 }
-
-

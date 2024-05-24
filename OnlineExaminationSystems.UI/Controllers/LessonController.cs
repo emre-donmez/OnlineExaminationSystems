@@ -21,6 +21,7 @@ namespace OnlineExaminationSystems.UI.Controllers
             var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.LessonEndpoint);
             return View(lessons);
         }
+    
 
     }
 }

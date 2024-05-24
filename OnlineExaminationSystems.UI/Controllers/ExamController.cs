@@ -16,8 +16,7 @@ namespace OnlineExaminationSystems.UI.Controllers
             _apiRequestHelper = apiRequestHelper;
         }
 
-        [Route("Exams")]
-        public async Task<IActionResult> Exams(int lessonId)
+        public async Task<IActionResult> Index(int lessonId)
         {
             var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
             return View(exams);

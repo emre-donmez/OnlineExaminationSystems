@@ -33,6 +33,13 @@ namespace OnlineExaminationSystems.UI.Controllers
             var createQuestion = await _apiRequestHelper.PostAsync<Question>(ApiEndpoints.QuestionEndpoint, question);
             return RedirectToAction("Questions", new { examId = question.ExamId });
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] Question model)
+        {
+            var response = await _apiRequestHelper.PutAsync<Question>(ApiEndpoints.GetQuestionsByExamIdEndPoint(model.Id), model);
+            return Ok();
+        }
+      
 
     }
 }
