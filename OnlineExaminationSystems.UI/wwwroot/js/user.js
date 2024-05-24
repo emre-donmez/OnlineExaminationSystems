@@ -92,7 +92,7 @@ function saveCreate() {
         });
 }
 
-function deleteUser(id) {
+function deleteEntity(id) {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     fetch('/User/Delete', {
