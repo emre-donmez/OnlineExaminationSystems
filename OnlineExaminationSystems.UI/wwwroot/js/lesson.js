@@ -157,8 +157,7 @@ async function getStudents() {
 function createSelect() {
     var copiedSelect = document.createElement('select');
     copiedSelect.className = 'form-control form-select mt-3';
-
-    users.forEach(user => {
+    users.filter(user => user.RoleId == 2).forEach(user => {
         var copiedOption = document.createElement('option');
         copiedOption.value = user.Id;
         copiedOption.text = user.Email + ' | ' + user.Name + ' ' + user.Surname;

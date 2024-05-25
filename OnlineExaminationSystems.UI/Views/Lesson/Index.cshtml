@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <label for="editUser">Academician:</label>
                         <select class="form-control form-select" id="editUserId" name="userId">
-                            @foreach (var user in ViewBag.Users)
+                            @foreach (var user in ((List<OnlineExaminationSystems.UI.Models.User.User>)ViewBag.Users).Where(user => user.RoleId == 1).ToList())
                             {
                                 <option value="@user.Id">@user.Name @user.Surname</option>
                             }
@@ -92,4 +92,4 @@
   </div>
 </div>
 
-<script src="~/js/lesson.js"></script>
+<script src="~/js/lesson.js" asp-append-version="true"></script>
