@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models;
 
@@ -18,11 +19,16 @@ namespace OnlineExaminationSystems.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(Login login)
+        public async Task<IActionResult> Login([FromBody] Login login)
         {
-            //Burada login işlemleri yapılacak ve token alınacak, sana kullanım örneği olsun diye yazdım
-            //var result = await _apiRequestHelper.PostAsync<string>(ApiEndpoints.LoginEndpoint, login);
-            return View();
+            var token = await _apiRequestHelper.PostAsync<string>(ApiEndpoints.LoginEndpoint, login);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                return Json(token); 
+            }
+
+            return Unauthorized();
         }
     }
 }
