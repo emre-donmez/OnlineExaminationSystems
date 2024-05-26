@@ -12,12 +12,14 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly IExamsService _examsService;
         private readonly IValidator<ExamUpdateRequestModel> _validatorExamUpdateRequestModel;
         private readonly IQuestionsService _questionsService;
+        private readonly IResultsService _resultsService;
 
-        public ExamsController(IExamsService examsService, IValidator<ExamUpdateRequestModel> validatorExamUpdateRequestModel, IQuestionsService questionsService)
+        public ExamsController(IExamsService examsService, IValidator<ExamUpdateRequestModel> validatorExamUpdateRequestModel, IQuestionsService questionsService, IResultsService resultsService)
         {
             _examsService = examsService;
             _validatorExamUpdateRequestModel = validatorExamUpdateRequestModel;
             _questionsService = questionsService;
+            _resultsService = resultsService;
         }
 
         [HttpGet]
@@ -77,6 +79,13 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var questions = _questionsService.GetQuestionsByExamIdForExam(examId);
             return Ok(questions);
-        }      
+        }
+
+        [HttpGet("{examId}/results")]
+        public IActionResult GetResultsByExamId(int examId)
+        {
+            var results = _resultsService.GetResultsByExamId(examId);
+            return Ok(results);
+        }
     }
 }

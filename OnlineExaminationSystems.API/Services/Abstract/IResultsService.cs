@@ -2,7 +2,8 @@
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
-    public interface IResultsService : ICrudService<Result> 
+    public interface IResultsService : ICrudService<Result>
     {
+        IEnumerable<Result> GetResultsByExamId(int examId);
     }
 }
