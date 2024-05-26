@@ -16,14 +16,16 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly IMapper _mapper;
         private readonly IValidator<User> _validatorUserValidator;
         private readonly ILessonsService _lessonsService;
+        private readonly IEnrollmentsService _enrollmentsService;
 
-        public UsersController(IUsersService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser, ILessonsService lessonsService)
+        public UsersController(IUsersService userService, IValidator<UserUpdateRequestModel> validatorUserUpdateRequest, IMapper mapper, IValidator<User> validatorUser, ILessonsService lessonsService, IEnrollmentsService enrollmentsService)
         {
             _userService = userService;
             _validatorUserUpdateRequest = validatorUserUpdateRequest;
             _validatorUserValidator = validatorUser;
             _mapper = mapper;
             _lessonsService = lessonsService;
+            _enrollmentsService = enrollmentsService;
         }
 
         [HttpGet]
@@ -83,6 +85,12 @@ namespace OnlineExaminationSystems.API.Controllers
             return Ok(lessons);
         }
 
+        [HttpGet("{id}/enrollments")]
+        public IActionResult GetEnrollmentsByUserId(int id)
+        {
+            var lessons = _enrollmentsService.GetEnrollmentsByUserId(id);
+            return Ok(lessons);
+        }
 
         //[HttpPatch("{id}")]
         //public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)

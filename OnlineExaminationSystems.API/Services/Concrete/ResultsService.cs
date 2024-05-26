@@ -10,5 +10,13 @@ namespace OnlineExaminationSystems.API.Services.Concrete
         public ResultsService(IGenericRepository<Result> repository, IMapper mapper) : base(repository, mapper)
         {
         }
+
+        public IEnumerable<Result> GetResultsByExamId(int examId)
+        {
+            var query = $"SELECT id AS Id,user_id AS UserId,exam_id AS ExamId,Score FROM Results where exam_id =@Id";
+            var parameters = new { Id = examId };
+
+            return _repository.ExecuteQuery(query, parameters);
+        }
     }
 }

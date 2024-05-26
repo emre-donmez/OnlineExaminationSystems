@@ -1,0 +1,97 @@
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.Lesson.Lesson>
+@{
+    ViewData["Title"] = "Lesson List";
+}
+<h1 class="my-4">Lesson List</h1>
+
+<button class="btn btn-primary" onclick="openCreateModal()">Create Lesson</button>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>Academician</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@(item.User.Name + " " + item.User.Surname)</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.Name', '@item.UserId')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteEntity('@item.Id')">Delete</button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="openStudentsModal('@item.Id')">Students</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="editId" name="id" />
+                    <div class="form-group">
+                        <label for="editName">Name:</label>
+                        <input type="text" class="form-control" id="editName" name="name" />
+                    </div>
+                                       
+                    <div class="form-group">
+                        <label for="editUser">Academician:</label>
+                        <select class="form-control form-select" id="editUserId" name="userId">
+                            @foreach (var user in ((List<OnlineExaminationSystems.UI.Models.User.User>)ViewBag.Users).Where(user => user.RoleId == 1).ToList())
+                            {
+                                <option value="@user.Id">@user.Name @user.Surname</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="save-button">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    var jsonUsers = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Users);
+}
+<div id="users" data-users="@jsonUsers"></div>
+
+<!-- Student Modal -->
+<div class="modal fade" id="studentsModal" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="studentsModalLabel">Students</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-container"> 
+            
+              
+        </div>
+        <button type="button" class="btn btn-primary mt-2" onclick="createSelect()">New Student</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save-student-modal-button">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="~/js/lesson.js" asp-append-version="true"></script>
