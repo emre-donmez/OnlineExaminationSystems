@@ -30,8 +30,8 @@
                 <td>@Html.DisplayFor(modelItem => item.Option2)</td>
                 <td>@Html.DisplayFor(modelItem => item.Option3)</td>
                 <td>
-                    <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.QuestionText', '@item.CorrectAnswer', '@item.Option1', '@item.Option2', '@item.Option3', '@item.ExamId')">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteUser('@item.Id')">Delete</button>
+                    <button class="btn btn-sm btn-warning" onclick="openEditModal('@item.Id', '@item.QuestionText','@item.Option1', '@item.Option2', '@item.Option3','@item.CorrectAnswer', '@item.ExamId')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteQuestion('@item.Id')">Delete</button>
                 </td>
             </tr>
         }
@@ -72,6 +72,7 @@
                         <label for="editCorrectAnswer">Correct Answer</label>
                         <input type="text" class="form-control" id="editCorrectAnswer" name="CorrectAnswer">
                     </div>
+                   
                 </form>
             </div>
             <div class="modal-footer">

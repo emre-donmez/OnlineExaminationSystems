@@ -19,6 +19,8 @@
         public static string GetQuestionsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Questions";
         public static string GetQuestionsByExamIdForExam(int examId) => $"{ExamEndpoint}/{examId}/Start";
 
+        public static string QuestionsEndPointWithId(int id) => $"{QuestionEndpoint}/{id}";
+
         public static string AnswerEndPoint = BaseEndpoint + "Answers";
 
         public const string QuestionEndpoint = BaseEndpoint + "Questions";
@@ -29,6 +31,9 @@
         public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";
         public static string GetStudentsByLessonIdEndpoint(int id) => $"{LessonEndpoint}/{id}/students";
         public static string EnrollmentEndPointWithId(int id) => $"{EnrollmentEndpoint}/{id}";
+        public static string GetAcademicianLessonsByUserId(int userId) => $"{UserEndpoint}/{userId}/Lessons";
+        public static string GetResultsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Results";
+        public static string GetEnrollmentByUserIdEndPoint(int userId) => $"{UserEndpoint}/{userId}/Enrollments";
 
 
     }

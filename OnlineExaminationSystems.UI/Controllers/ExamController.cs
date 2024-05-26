@@ -2,6 +2,7 @@
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models;
 using OnlineExaminationSystems.UI.Models.Dtos;
+using OnlineExaminationSystems.UI.Models.User;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -20,6 +21,18 @@ namespace OnlineExaminationSystems.UI.Controllers
         {
             var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
             return View(exams);
+        }
+        public async Task<IActionResult> Results(int examId)
+        {
+            var results = await _apiRequestHelper.GetAsync<IEnumerable<Result>>(ApiEndpoints.GetResultsByExamIdEndPoint(examId));
+            var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
+            var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.ExamEndpoint);
+            foreach (var result in results)
+            {
+                result.User = users.FirstOrDefault(x => x.Id == result.UserId);
+                result.Exam = exams.FirstOrDefault(x => x.Id == result.ExamId);
+            }
+            return View(results);
         }
 
         public async Task<IActionResult> Create()

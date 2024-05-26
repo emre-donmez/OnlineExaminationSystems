@@ -22,15 +22,21 @@
         {
             <tr>
                 <td>@exam.Id</td>
-                <td>
-                    <a class="custom-link" href="@Url.Action("Questions", "Question", new { examId = exam.Id })">@exam.Name</a>
-                </td>
+                <td>@exam.Name</td>
                 <td>@exam.Duration</td>
                 <td>@exam.QuestionCount</td>
                 <td>@exam.StartedDate.ToShortDateString()</td>
                 <td>
-                    <button class="btn btn-primary" onclick="openEditModal('@exam.Id', '@exam.Name','@exam.LessonId', '@exam.QuestionCount', '@exam.Duration', '@exam.StartedDate.ToString("yyyy-MM-ddTHH:mm")')"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteExam('@exam.Id')">Delete</button>
+                    <button class="btn btn-primary" onclick="location.href='@Url.Action("Questions", "Question", new { examId = exam.Id })'">
+                        <i class="fas fa-question-circle"></i> Questions
+                    </button>
+                    <button class="btn btn-info" onclick="location.href='@Url.Action("Results", "Exam", new { examId = exam.Id })'">
+                        <i class="fas fa-chart-bar"></i> Results
+                    </button>
+                    <button class="btn btn-warning" onclick="openEditModal('@exam.Id', '@exam.Name', '@exam.LessonId', '@exam.QuestionCount', '@exam.Duration', '@exam.StartedDate.ToString("yyyy-MM-ddTHH:mm")')">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteExam('@exam.Id')"><i class="fas fa-trash-alt"></i></button>
                 </td>
             </tr>
         }
@@ -102,5 +108,13 @@
             color: #0056b3;
         }
 </style>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>@ViewData["Title"] - OnlineExaminationSystems.UI</title>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/OnlineExaminationSystems.UI.styles.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="~/js/Exam.js"></script>

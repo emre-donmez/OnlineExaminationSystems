@@ -41,3 +41,28 @@ function saveEdit() {
             toastr.error('An error occurred while editing question.');
         });
 }
+
+function deleteQuestion(id) {
+    if (!confirm('Are you sure you want to delete this question?')) return;
+
+    fetch(`/Question/Delete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: parseInt(id) })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            toastr.success('Question successfully deleted!');
+            setTimeout(() => {
+                window.location.reload();
+            }, 2500);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            toastr.error('An error occurred while deleting question.');
+        });
+}

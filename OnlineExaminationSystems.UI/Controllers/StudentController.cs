@@ -2,6 +2,7 @@
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models;
 using OnlineExaminationSystems.UI.Models.Dtos;
+using OnlineExaminationSystems.UI.Models.Lesson;
 
 namespace OnlineExaminationSystems.UI.Controllers
 {
@@ -13,6 +14,20 @@ namespace OnlineExaminationSystems.UI.Controllers
         {
             _apiRequestHelper = apiRequestHelper;
         }
+
+        public async Task<IActionResult> Lessons(int userId)
+        {
+          var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.GetEnrollmentByUserIdEndPoint(userId));
+        
+          return View(lessons);
+        }
+        public async Task<IActionResult> Exams(int lessonId)
+        {
+            var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
+            return View(exams);
+        }
+
+
         [Route("ExamPage")]
         public async Task<IActionResult> ExamPage(int examId)
         {
@@ -32,6 +47,7 @@ namespace OnlineExaminationSystems.UI.Controllers
             }            
 
             return RedirectToAction("Index","Home"); // burada öğrenci derslerine yönlendirilebilir.
-        }   
+        }
+        
     }
 }

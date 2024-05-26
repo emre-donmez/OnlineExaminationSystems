@@ -36,10 +36,16 @@ namespace OnlineExaminationSystems.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromBody] Question model)
         {
-            var response = await _apiRequestHelper.PutAsync<Question>(ApiEndpoints.GetQuestionsByExamIdEndPoint(model.Id), model);
+            var response = await _apiRequestHelper.PutAsync<Question>(ApiEndpoints.QuestionsEndPointWithId(model.Id), model);
             return Ok();
         }
-      
+        [HttpPost]
+        public async Task<IActionResult> Delete([FromBody] Question model)
+        {
+            var response = await _apiRequestHelper.DeleteAsync(ApiEndpoints.QuestionsEndPointWithId(model.Id));
+            return response ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
 
     }
 }
