@@ -19,6 +19,8 @@
         public static string GetQuestionsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Questions";
         public static string GetQuestionsByExamIdForExam(int examId) => $"{ExamEndpoint}/{examId}/Start";
 
+        public static string QuestionsEndPointWithId(int id) => $"{QuestionEndpoint}/{id}";
+
         public static string AnswerEndPoint = BaseEndpoint + "Answers";
 
         public const string QuestionEndpoint = BaseEndpoint + "Questions";
