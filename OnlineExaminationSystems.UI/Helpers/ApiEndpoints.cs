@@ -25,8 +25,6 @@
 
         public const string RoleEndpoint = BaseEndpoint + "Roles";
 
-        public const string LessonEndpoint = BaseEndpoint + "Lessons";
-
         public const string EnrollmentEndpoint = BaseEndpoint + "Enrollments";
         public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";
         public static string GetStudentsByLessonIdEndpoint(int id) => $"{LessonEndpoint}/{id}/students";
