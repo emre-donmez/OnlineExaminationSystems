@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Academician\**" />
+    <Content Remove="Views\Academician\**" />
+    <EmbeddedResource Remove="Views\Academician\**" />
+    <None Remove="Views\Academician\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\js\login.js" />
   </ItemGroup>
 
@@ -20,10 +27,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Academician\" />
   </ItemGroup>
 
 </Project>

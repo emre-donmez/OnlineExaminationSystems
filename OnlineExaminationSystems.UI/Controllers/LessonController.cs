@@ -12,13 +12,7 @@ namespace OnlineExaminationSystems.UI.Controllers
         public LessonController(IApiRequestHelper apiRequestHelper)
         {
             _apiRequestHelper = apiRequestHelper;
-        }
-
-        public async Task<IActionResult> UsersLesson(int userId)
-        {
-           var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.GetAcademicianLessonsByUserId(userId));
-           return View(lessons);
-        }
+        }    
 
         public async Task<IActionResult> Index()
         {
@@ -31,6 +25,13 @@ namespace OnlineExaminationSystems.UI.Controllers
             }
 
             ViewBag.Users = users;
+            return View(lessons);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Academician(int userId)
+        {
+            var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.GetAcademicianLessonsByUserId(userId));
             return View(lessons);
         }
 

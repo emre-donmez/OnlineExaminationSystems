@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Helpers;
-using OnlineExaminationSystems.UI.Models;
 using OnlineExaminationSystems.UI.Models.Dtos;
+using OnlineExaminationSystems.UI.Models.Question;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

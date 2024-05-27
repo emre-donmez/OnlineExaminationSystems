@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.UI.Models
+﻿namespace OnlineExaminationSystems.UI.Models.Exam
 {
     public class ExamUpdateRequest
     {

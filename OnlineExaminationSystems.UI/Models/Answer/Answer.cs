@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.UI.Models
+﻿namespace OnlineExaminationSystems.UI.Models.Answer
 {
     public class Answer
     {
@@ -7,6 +7,6 @@
         public int QuestionId { get; set; }
         public string GivenAnswer { get; set; }
         public bool IsCorrect { get; set; }
-        
+
     }
 }

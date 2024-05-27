@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlineExaminationSystems.UI.Models
+namespace OnlineExaminationSystems.UI.Models.Result
 {
     public class Result
     {
@@ -9,6 +9,6 @@ namespace OnlineExaminationSystems.UI.Models
         public int ExamId { get; set; }
         public int Score { get; set; }
         public User.User User { get; set; }
-        public Exam Exam { get; set; }
+        public Exam.Exam Exam { get; set; }
     }
 }

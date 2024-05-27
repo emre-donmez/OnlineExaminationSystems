@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Helpers;
-using OnlineExaminationSystems.UI.Models;
 using OnlineExaminationSystems.UI.Models.Dtos;
+using OnlineExaminationSystems.UI.Models.Exam;
+using OnlineExaminationSystems.UI.Models.Lesson;
+using OnlineExaminationSystems.UI.Models.Question;
+using OnlineExaminationSystems.UI.Models.Result;
 using OnlineExaminationSystems.UI.Models.User;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace OnlineExaminationSystems.UI.Controllers
 {
@@ -17,11 +18,18 @@ namespace OnlineExaminationSystems.UI.Controllers
             _apiRequestHelper = apiRequestHelper;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Index(int lessonId)
         {
             var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
+
+            var lesson = await _apiRequestHelper.GetAsync<Lesson>(ApiEndpoints.LessonEndPointWithId(lessonId));
+
+            ViewBag.Lesson = lesson;
+
             return View(exams);
         }
+
         public async Task<IActionResult> Results(int examId)
         {
             var results = await _apiRequestHelper.GetAsync<IEnumerable<Result>>(ApiEndpoints.GetResultsByExamIdEndPoint(examId));
@@ -35,16 +43,24 @@ namespace OnlineExaminationSystems.UI.Controllers
             return View(results);
         }
 
-        public async Task<IActionResult> Create()
+        [HttpPost]
+        public async Task<IActionResult> CalculateResult(int examId)
         {
+            _apiRequestHelper.GetAsync(ApiEndpoints.CalculateResultEndPoint(examId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(int lessonId)
+        {
+            TempData["lessonId"] = lessonId;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ExamUpdateRequestModel exam)
+        public async Task<IActionResult> CreatePost(ExamUpdateRequestModel exam)
         {
-            var exams = await _apiRequestHelper.PostAsync<Exam>(ApiEndpoints.ExamEndpoint,exam);
-            return RedirectToAction("Exams");
+            var exams = await _apiRequestHelper.PostAsync<Exam>(ApiEndpoints.ExamEndpoint, exam);
+            return Ok();
         }
 
         [HttpPost]
@@ -63,17 +79,8 @@ namespace OnlineExaminationSystems.UI.Controllers
 
         public async Task<IActionResult> Exam(int ExamId)
         {
-            var questions= await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.QuestionEndpoint,ExamId);
+            var questions = await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.QuestionEndpoint, ExamId);
             return View(questions);
         }
-
-
-
-
-
-
-       
-
-
     }
 }

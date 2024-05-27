@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public int UserId { get; set; }
         public User.User User { get; set; }
-        public Exam Exam { get; set; }
+        public Exam.Exam Exam { get; set; }
     }
 }
