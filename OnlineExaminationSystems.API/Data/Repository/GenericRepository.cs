@@ -2,6 +2,7 @@
 using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Models.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Reflection;
 
 namespace OnlineExaminationSystems.API.Data.Repository
@@ -150,5 +151,13 @@ namespace OnlineExaminationSystems.API.Data.Repository
 
             return result > 0 ? true : false;
         }
+
+        public void ExecuteStoredProcedure(string storedProcedure, object parameters)
+        {
+            using var connection = _context.CreateConnection();
+
+            connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+        }
+
     }
 }

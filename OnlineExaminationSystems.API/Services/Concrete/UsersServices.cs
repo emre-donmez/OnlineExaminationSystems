@@ -28,7 +28,10 @@ namespace OnlineExaminationSystems.API.Services.Concrete
 
         public User UpdateUserWithHashedPassword(User user)
         {
-            user.Password = _passwordHashHelper.HashPassword(user.Password);
+            var existedUser = _repository.GetById(user.Id);
+
+            if(!existedUser.Password.Equals(user.Password))
+                user.Password = _passwordHashHelper.HashPassword(user.Password);
 
             return Update(user);
         }

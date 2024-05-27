@@ -87,5 +87,14 @@ namespace OnlineExaminationSystems.API.Controllers
             var results = _resultsService.GetResultsByExamId(examId);
             return Ok(results);
         }
+
+        [HttpGet("{examId}/calculate-results")]
+        public IActionResult CalculateResults(int examId)
+        {
+            _resultsService.CalculateResults(examId);
+            return Ok();
+        }
+
+
     }
 }
