@@ -18,5 +18,11 @@ namespace OnlineExaminationSystems.API.Services.Concrete
 
             return _repository.ExecuteQuery(query, parameters);
         }
+
+        public void CalculateResults(int examId)
+        {
+            var parameters = new { exam_id = examId };
+            _repository.ExecuteStoredProcedure("CalculateExamResult", parameters);
+        }
     }
 }

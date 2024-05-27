@@ -64,5 +64,6 @@ namespace OnlineExaminationSystems.API.Data.Repository
         /// <param name="parameters">The parameters to pass to the query.</param>
         /// <returns>The first query result or default value if not found.</returns>
         T ExecuteQueryFirstOrDefault(string query, object parameters);
+        void ExecuteStoredProcedure(string storedProcedure, object parameters);
     }
 }
