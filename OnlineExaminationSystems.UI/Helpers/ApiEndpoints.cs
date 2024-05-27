@@ -44,6 +44,6 @@
 
         public static string GetEnrollmentByUserIdEndPoint(int userId) => $"{UserEndpoint}/{userId}/Enrollments";
 
-        public static string CalculateResultEndPoint(int examId) => $"{ExamEndpoint}/{examId}/CalculateResult";
+        public static string CalculateResultEndPoint(int examId) => $"{ExamEndpoint}/{examId}/calculate-results";
     }
 }

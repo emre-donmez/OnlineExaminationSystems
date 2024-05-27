@@ -37,8 +37,12 @@
         }
     </tbody>
 </table>
-<a asp-action="CreateQuestion" class="btn btn-primary">Create New</a>
-<input id="editExamId" value="@Model.FirstOrDefault().ExamId" hidden />
+<a asp-action="CreateQuestion" asp-route-examId="@TempData["ExamId"]" class="btn btn-primary">Create New</a>
+@if (@Model != null && @Model.FirstOrDefault() != null && @Model.FirstOrDefault().ExamId != null)
+{
+    <input id="editExamId" value="@Model?.FirstOrDefault().ExamId" hidden />
+}
+
 <!--EditModal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

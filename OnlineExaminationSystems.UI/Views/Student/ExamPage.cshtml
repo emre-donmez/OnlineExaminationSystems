@@ -10,8 +10,7 @@
 
 <h1>@ViewBag.ExamName</h1>
 
-<form asp-action="SubmitExam" method="post" id="examForm">
-    <input type="hidden" name="UserId" value="2" id="userId" />
+<form id="examForm">
     @for (int i = 0; i < Model.Count; i++)
     {
         <div class="question">
@@ -36,7 +35,7 @@
         <hr />
     }
 
-    <button type="submit" class="btn btn-success" id="exam-end-button">Submit Exam</button>
+    <button type="button" class="btn btn-success" id="exam-end-button">Submit Exam</button>
 </form>
 <script src="/js/examPage.js"></script>
 

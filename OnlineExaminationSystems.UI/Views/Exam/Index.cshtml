@@ -26,7 +26,7 @@
                 <td>@exam.Name</td>
                 <td>@exam.Duration</td>
                 <td>@exam.QuestionCount</td>
-                <td>@exam.StartedDate.ToShortDateString()</td>
+                <td>@exam.StartedDate.ToLongTimeString()</td>
                 <td>
                     <button class="btn btn-primary" onclick="location.href='@Url.Action("Questions", "Question", new { examId = exam.Id })'">
                         <i class="fas fa-question-circle"></i> Questions

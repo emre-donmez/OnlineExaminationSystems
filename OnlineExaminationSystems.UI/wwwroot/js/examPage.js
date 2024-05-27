@@ -1,6 +1,6 @@
 document.getElementById('exam-end-button').addEventListener('click', function () {
     const radioButtons = document.querySelectorAll('.form-check-input[type="radio"]:checked');
-    const userId = document.getElementById('userId').value;
+    const userId = JSON.parse(localStorage.getItem('jwt')).nameid;
     let answers = [];
 
     radioButtons.forEach(radio => {
@@ -22,7 +22,7 @@ document.getElementById('exam-end-button').addEventListener('click', function ()
             }
             toastr.success('Exam done!');
             setTimeout(() => {
-                window.location.reload();
+                window.location.href = "/Student/lessons?userId=" + JSON.parse(localStorage.getItem('jwt')).nameid;
             }, 2500);
         })
         .catch(error => {
@@ -31,14 +31,10 @@ document.getElementById('exam-end-button').addEventListener('click', function ()
         });
 });
 
-class Answer{
+class Answer {
     constructor(userId, questionId, givenAnswer) {
         this.userId = userId;
         this.questionId = questionId;
         this.givenAnswer = givenAnswer;
     }
 };
-
-
-
-

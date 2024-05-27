@@ -17,6 +17,7 @@
         });
     }
     else if (role === '2') {
+        navItems.push({ url: '/Student/lessons?userId=' + userId, text: 'Lesson' });
     }
     else if (role === '3') {
         navItems.push({ url: '/User/Index', text: 'User' });

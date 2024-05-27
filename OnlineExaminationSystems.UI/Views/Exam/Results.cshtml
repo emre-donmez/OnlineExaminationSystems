@@ -5,7 +5,7 @@
 }
 
 <h1>Results</h1>
-
+<button type="button" class="btn btn-primary" id="calculate-button">Calculate Result</button>
 <table class="table">
     <thead>
         <tr>
@@ -49,3 +49,30 @@
 }
     </tbody>
 </table>    
+<script>
+    var examId = parseInt('@TempData["examId"]');
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('calculate-button').addEventListener('click', function () {
+            fetch('/Exam/CalculateResult', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // İçerik türünü belirt
+                },
+                body: JSON.stringify(examId)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Başarılı cevap durumunda sayfayı yenile
+                        location.reload();
+                    } else {
+                        // Hata durumunda uygun işlemleri yap
+                        console.error('Bir hata oluştu');
+                    }
+                })
+                .catch(error => {
+                    console.error('İstek gönderilirken bir hata oluştu:', error);
+                });
+        });
+    });
+
+</script>

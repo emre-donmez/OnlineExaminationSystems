@@ -1,45 +1,20 @@
-﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.Lesson.Lesson>
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.Enrollment.Enrollment>
 
 @{
     ViewData["Title"] = "Lessons";
 }
 
-<h1>Lessons</h1>
+<h1 class="text-center">Lessons</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-                <td>
-                    <a class="btn btn-info" href="@Url.Action("Details", "Lesson", new { id = item.Id })">Details</a>
-                </td>
-                <td>
-                    <a class="btn btn-primary" href="@Url.Action("Exams", "Lesson", new { id = item.Id })">Exams</a>
-                </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var lesson in Model)
+        {
+            <div class="col-auto mb-3">
+                <a class="btn btn-info btn-lg btn-block" style="min-width: 200px; margin-right: 10px;" href="@Url.Action("Exams", "Student", new { lessonId = lesson.Lesson.Id })">
+                    @Html.DisplayFor(modelItem => lesson.Lesson.Name)
+                </a>
+            </div>
+        }
+    </div>
+</div>

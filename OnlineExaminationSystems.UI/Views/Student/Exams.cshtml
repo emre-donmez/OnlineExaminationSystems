@@ -10,52 +10,63 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LessonId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuestionCount)
+                Question Count
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Duration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartedDate)
+                Started Date
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LessonId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuestionCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartedDate)
-            </td>
-            <td>
-                    <button class="btn btn-primary" href="@Url.Action("ExamPage","Student",new{ examId=item.Id})">Start</button>
-            </td>
-            
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartedDate)
+                </td>
+                <td>
+                    @{
+                        var examEndDate = item.StartedDate.AddMinutes(item.Duration);
+                        if (DateTime.Now >= item.StartedDate && DateTime.Now <= examEndDate)
+                        {
+                            <a class="btn btn-primary start-exam" href="@Url.Action("ExamPage", new { examId = item.Id })">Start</a>
+                        }
+                    }
+                </td>
+
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var startButtons = document.querySelectorAll('.start-exam');
+            startButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    var confirmStart = confirm("The exam will begin. Are you sure?");
+                    if (!confirmStart) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+}

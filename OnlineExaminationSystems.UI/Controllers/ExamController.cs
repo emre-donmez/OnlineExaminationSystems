@@ -40,13 +40,15 @@ namespace OnlineExaminationSystems.UI.Controllers
                 result.User = users.FirstOrDefault(x => x.Id == result.UserId);
                 result.Exam = exams.FirstOrDefault(x => x.Id == result.ExamId);
             }
+            TempData["examId"] = examId;
             return View(results);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CalculateResult(int examId)
+        public async Task<IActionResult> CalculateResult([FromBody] int examId)
         {
-            _apiRequestHelper.GetAsync(ApiEndpoints.CalculateResultEndPoint(examId));
+            await _apiRequestHelper.GetAsync<object>(ApiEndpoints.CalculateResultEndPoint(examId));
+            return Ok();
         }
 
         [HttpPost]
