@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Helpers;
+using OnlineExaminationSystems.UI.Models;
 using OnlineExaminationSystems.UI.Models.Lesson;
 using OnlineExaminationSystems.UI.Models.User;
 
@@ -11,7 +12,7 @@ namespace OnlineExaminationSystems.UI.Controllers
         public LessonController(IApiRequestHelper apiRequestHelper)
         {
             _apiRequestHelper = apiRequestHelper;
-        }
+        }    
 
         public async Task<IActionResult> Index()
         {
@@ -24,6 +25,13 @@ namespace OnlineExaminationSystems.UI.Controllers
             }
 
             ViewBag.Users = users;
+            return View(lessons);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Academician(int userId)
+        {
+            var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.GetAcademicianLessonsByUserId(userId));
             return View(lessons);
         }
 

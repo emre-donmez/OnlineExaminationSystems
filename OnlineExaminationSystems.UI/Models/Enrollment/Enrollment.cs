@@ -1,5 +1,4 @@
-﻿
-namespace OnlineExaminationSystems.UI.Models.Enrollment
+﻿namespace OnlineExaminationSystems.UI.Models.Enrollment
 {
     public class Enrollment
     {
@@ -7,5 +6,6 @@ namespace OnlineExaminationSystems.UI.Models.Enrollment
         public int UserId { get; set; }
         public int LessonId { get; set; }
         public User.User User { get; set; }
+        public Lesson.Lesson Lesson { get; set; }
     }
 }

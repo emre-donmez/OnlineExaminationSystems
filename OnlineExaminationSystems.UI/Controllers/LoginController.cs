@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NuGet.Common;
 using OnlineExaminationSystems.UI.Helpers;
-using OnlineExaminationSystems.UI.Models;
+using OnlineExaminationSystems.UI.Models.Login;
 
 namespace OnlineExaminationSystems.UI.Controllers
 {

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.Lesson.Lesson>
+
+@{
+    ViewData["Title"] = "Lessons";
+}
+<link rel="stylesheet" href="~/css/lesson-academician.css" />
+
+<div class="container">
+    <h1 class="text-center mt-5">@ViewData["Title"]</h1>
+    <div class="table-container">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>                           
+                            <form asp-action="Index" asp-controller="Exam" method="post">
+                                <input type="hidden" name="lessonId" value= @item.Id />
+                                <button type="submit" class="btn btn-dark">Exams</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

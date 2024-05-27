@@ -63,6 +63,6 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var result = _answersService.Delete(id);
             return result ? Ok() : NotFound();
-        }      
+        }
     }
 }
