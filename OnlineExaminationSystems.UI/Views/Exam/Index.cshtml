@@ -46,11 +46,11 @@
 
 <div>
     <form asp-action="Create" method="post">
-        <input type="hidden" name="lessonId" value=@Model.FirstOrDefault().LessonId />
+        <input type="hidden" name="lessonId" value="@ViewBag.Lesson.Id"/>
         <button type="submit" class="btn btn-success">Create New</button>
     </form>
 </div>
-<input id="editLessonId" value="@Model.FirstOrDefault().LessonId" hidden/>
+<input id="editLessonId" value="@ViewBag.Lesson.Id" hidden/>
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

@@ -2,7 +2,7 @@
 {
     public static class ApiEndpoints
     {
-        public const string BaseEndpoint = "http://localhost:5236/api/";
+        public const string BaseEndpoint = "http://localhost:5000/api/";
 
         public const string UserEndpoint = BaseEndpoint + "Users";
 
