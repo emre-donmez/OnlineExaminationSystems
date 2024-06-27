@@ -23,7 +23,7 @@ namespace OnlineExaminationSystems.UI.Controllers
             {
                 user.Role = roles.FirstOrDefault(x => x.Id == user.RoleId);
             }
-            
+
             ViewBag.Roles = roles;
             return View(users);
         }
@@ -37,7 +37,7 @@ namespace OnlineExaminationSystems.UI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UserUpdateRequest model)
-        {        
+        {
             var response = await _apiRequestHelper.PostAsync<User>(ApiEndpoints.UserEndpoint, model);
             return Ok();
         }

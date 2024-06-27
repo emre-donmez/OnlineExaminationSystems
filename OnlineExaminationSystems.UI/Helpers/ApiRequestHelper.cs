@@ -5,14 +5,11 @@ namespace OnlineExaminationSystems.UI.Helpers
 {
     public class ApiRequestHelper : IApiRequestHelper
     {
-        private readonly HttpClient _client;
+        private HttpClient _client;
 
         public ApiRequestHelper(HttpClient client)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            _client = new HttpClient(clientHandler);
         }
 
         public async Task<T> GetAsync<T>(string endpoint, object data)
@@ -69,7 +66,7 @@ namespace OnlineExaminationSystems.UI.Helpers
                 PropertyNameCaseInsensitive = true
             };
 
-            return JsonSerializer.Deserialize<T>(responseData,jsonSerializerOptions);
+            return JsonSerializer.Deserialize<T>(responseData, jsonSerializerOptions);
         }
 
         private static StringContent CreateStringContent(object data)
