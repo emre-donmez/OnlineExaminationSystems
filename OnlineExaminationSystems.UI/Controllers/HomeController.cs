@@ -21,9 +21,9 @@ namespace OnlineExaminationSystems.UI.Controllers
             if (string.IsNullOrEmpty(token))
                 return RedirectToAction("Index", "Account");
 
+            ViewBag.UserName = UserHelper.GetUserName(Request.HttpContext);
             return View();
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
