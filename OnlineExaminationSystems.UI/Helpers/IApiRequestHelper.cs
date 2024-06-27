@@ -1,4 +1,5 @@
-﻿namespace OnlineExaminationSystems.UI.Helpers
+﻿
+namespace OnlineExaminationSystems.UI.Helpers
 {
     public interface IApiRequestHelper
     {
