@@ -20,7 +20,7 @@ function saveEdit() {
         CorrectAnswer: $('#editCorrectAnswer').val(),
         ExamId: $('#editExamId').val()
     };
-    fetch('/Question/Edit', {
+    fetch('/Academician/Question/Edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ function saveEdit() {
 function deleteQuestion(id) {
     if (!confirm('Are you sure you want to delete this question?')) return;
 
-    fetch(`/Question/Delete`, {
+    fetch(`/Academician/Question/Delete`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

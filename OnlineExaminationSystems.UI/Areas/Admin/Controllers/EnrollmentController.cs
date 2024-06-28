@@ -1,57 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
+using OnlineExaminationSystems.UI.Areas.Mutual.Models.Enrollment;
 using OnlineExaminationSystems.UI.Helpers;
-using OnlineExaminationSystems.UI.Models.Enrollment;
 
-namespace OnlineExaminationSystems.UI.Areas.Admin.Controllers
+namespace OnlineExaminationSystems.UI.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class EnrollmentController : Controller
 {
-    public class EnrollmentController : Controller
+    private readonly IApiRequestHelper _apiRequestHelper;
+
+    public EnrollmentController(IApiRequestHelper apiRequestHelper)
     {
-        private readonly IApiRequestHelper _apiRequestHelper;
+        _apiRequestHelper = apiRequestHelper;
+    }
+    public async Task<IActionResult> GetAll()
+    {
+        var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.EnrollmentEndpoint);
 
-        public EnrollmentController(IApiRequestHelper apiRequestHelper)
+        return Json(enrollments);
+    }
+
+    public async Task<IActionResult> GetStudentsByLessonId(int lessonId)
+    {
+        var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetStudentsByLessonIdEndpoint(lessonId));
+        var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
+
+        foreach (var enrollment in enrollments)
         {
-            _apiRequestHelper = apiRequestHelper;
-        }
-        public async Task<IActionResult> GetAll()
-        {
-            var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.EnrollmentEndpoint);
-
-            return Json(enrollments);
-        }
-
-        public async Task<IActionResult> GetStudentsByLessonId(int lessonId)
-        {
-            var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetStudentsByLessonIdEndpoint(lessonId));
-            var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
-
-            foreach (var enrollment in enrollments)
-            {
-                enrollment.User = users.FirstOrDefault(x => x.Id == enrollment.UserId);
-            }
-
-            return Json(enrollments);
+            enrollment.User = users.FirstOrDefault(x => x.Id == enrollment.UserId);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] List<EnrollmentUpdateRequestModel> models)
+        return Json(enrollments);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] List<EnrollmentUpdateRequestModel> models)
+    {
+        foreach (var model in models)
         {
-            foreach (var model in models)
-            {
-                await _apiRequestHelper.PostAsync<Enrollment>(ApiEndpoints.EnrollmentEndpoint, model);
-            }
-            return Ok();
+            await _apiRequestHelper.PostAsync<Enrollment>(ApiEndpoints.EnrollmentEndpoint, model);
+        }
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete([FromBody] List<int> models)
+    {
+        foreach (var model in models)
+        {
+            await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentEndPointWithId(model));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete([FromBody] List<int> models)
-        {
-            foreach (var model in models)
-            {
-                await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentEndPointWithId(model));
-            }
-
-            return Ok();
-        }
+        return Ok();
     }
 }

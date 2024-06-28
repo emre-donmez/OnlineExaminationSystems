@@ -28,7 +28,7 @@ function saveEdit() {
         Password: $('#editPassword').val(),
         RoleId: $('#editRoleId').val()
     };
-    fetch('/User/Edit', {
+    fetch('/Admin/User/Edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ function saveCreate() {
         Password: $('#editPassword').val(),
         RoleId: $('#editRoleId').val()
     };
-    fetch('/User/Create', {
+    fetch('/Admin/User/Create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ function saveCreate() {
 function deleteEntity(id) {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
-    fetch('/User/Delete', {
+    fetch('/Admin/User/Delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

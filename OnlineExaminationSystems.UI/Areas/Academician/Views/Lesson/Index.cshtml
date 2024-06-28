@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Lesson>
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson.Lesson>
 
 @{
     ViewData["Title"] = "Lessons";
@@ -23,11 +23,8 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Id)</td>
                         <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                        <td>                           
-                            <form asp-action="Index" asp-controller="Exam" method="post">
-                                <input type="hidden" name="lessonId" value= @item.Id />
-                                <button type="submit" class="btn btn-dark">Exams</button>
-                            </form>
+                        <td>
+                            <a href="@Url.Action("Index", "Exam", new { lessonId = @item.Id })" class="btn btn-dark">Exams</a>
                         </td>
                     </tr>
                 }

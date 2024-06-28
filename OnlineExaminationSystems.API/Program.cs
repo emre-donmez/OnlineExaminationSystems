@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using OnlineExaminationSystems.API.Data.Context;
 using OnlineExaminationSystems.API.Data.Repository;
 using OnlineExaminationSystems.API.Models.Dtos;
-using OnlineExaminationSystems.API.Models.Dtos.User;
 using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;

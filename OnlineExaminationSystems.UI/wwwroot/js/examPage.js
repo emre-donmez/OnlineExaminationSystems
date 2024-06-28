@@ -1,15 +1,14 @@
 document.getElementById('exam-end-button').addEventListener('click', function () {
     const radioButtons = document.querySelectorAll('.form-check-input[type="radio"]:checked');
-    const userId = JSON.parse(localStorage.getItem('jwt')).nameid;
     let answers = [];
 
     radioButtons.forEach(radio => {
         const questionId = radio.getAttribute('data-question-id');
         const selectedAnswer = radio.value;
-        answers.push(new Answer(userId, questionId, selectedAnswer));
+        answers.push(new Answer(questionId, selectedAnswer));
     });
 
-    fetch('/Student/SubmitExam', {
+    fetch('/Student/Exam/SubmitExam', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,9 +20,9 @@ document.getElementById('exam-end-button').addEventListener('click', function ()
                 throw new Error('Network response was not ok');
             }
             toastr.success('Exam done!');
-            setTimeout(() => {
-                window.location.href = "/Student/lessons?userId=" + JSON.parse(localStorage.getItem('jwt')).nameid;
-            }, 2500);
+            //setTimeout(() => {
+            //    window.location.href = "/Student/lessons?userId=" + JSON.parse(localStorage.getItem('jwt')).nameid;
+            //}, 2500);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -32,8 +31,7 @@ document.getElementById('exam-end-button').addEventListener('click', function ()
 });
 
 class Answer {
-    constructor(userId, questionId, givenAnswer) {
-        this.userId = userId;
+    constructor(questionId, givenAnswer) {
         this.questionId = questionId;
         this.givenAnswer = givenAnswer;
     }

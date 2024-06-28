@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.API.Models.Dtos.User;
+using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Services.Abstract;
 
@@ -30,7 +30,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.AdminAndAcademician)]
         public IActionResult Get()
         {
             var users = _userService.GetAll();

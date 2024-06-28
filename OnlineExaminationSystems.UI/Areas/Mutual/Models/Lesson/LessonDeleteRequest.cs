@@ -1,7 +1,6 @@
-﻿namespace OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson
+﻿namespace OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson;
+
+public class LessonDeleteRequest
 {
-    public class LessonDeleteRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

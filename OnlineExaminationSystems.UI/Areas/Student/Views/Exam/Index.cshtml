@@ -1,0 +1,73 @@
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Areas.Academician.Models.Exam.Exam>
+
+@{
+    ViewData["Title"] = "Exams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Exams</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Question Count
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                Started Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartedDate)
+                </td>
+                <td>
+                    @{
+                        var examEndDate = item.StartedDate.AddMinutes(item.Duration);
+                        if (DateTime.Now >= item.StartedDate && DateTime.Now <= examEndDate)
+                        {
+                            <a class="btn btn-primary start-exam" href="@Url.Action("Exam", new { examId = item.Id })">Start</a>
+                        }
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var startButtons = document.querySelectorAll('.start-exam');
+            startButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    var confirmStart = confirm("The exam will begin. Are you sure?");
+                    if (!confirmStart) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+}

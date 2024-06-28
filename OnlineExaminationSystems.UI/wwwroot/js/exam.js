@@ -6,8 +6,8 @@ function openEditModal(id, name, lessonId, questionCount, duration, startedDate)
     $('#editLessonId').val(lessonId);
     $('#editQuestionCount').val(questionCount);
     $('#editDuration').val(duration);
-    $('#editStartDate').val(startedDate.substring(0, 10)); // Extract date part
-    $('#editStartTime').val(startedDate.substring(11, 16)); // Extract time part
+    $('#editStartDate').val(startedDate.substring(0, 10)); 
+    $('#editStartTime').val(startedDate.substring(11, 16));
     $('#editModal').modal('show');
 }
 
@@ -21,7 +21,7 @@ function saveEdit() {
         StartedDate: $('#editStartDate').val() + 'T' + $('#editStartTime').val() + ':00'
     };
 
-    fetch('/Exam/Edit', {
+    fetch('/Academician/Exam/Edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ function saveEdit() {
 function deleteExam(id) {
     if (!confirm('Are you sure you want to delete this Exam?')) return;
 
-    fetch('/Exam/Delete', {
+    fetch('/Academician/Exam/Delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

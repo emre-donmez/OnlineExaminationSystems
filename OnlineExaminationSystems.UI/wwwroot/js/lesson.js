@@ -13,7 +13,7 @@ function saveEdit() {
         Name: $('#editName').val(),
         UserId: $('#editUserId').val()
     };
-    fetch('/Lesson/Edit', {
+    fetch('/Admin/Lesson/Edit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ function saveCreate() {
         Name: $('#editName').val(),
         UserId: $('#editUserId').val()       
     };
-    fetch('/Lesson/Create', {
+    fetch('/Admin/Lesson/Create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ function saveCreate() {
 function deleteEntity(id) {
     if (!confirm('Are you sure you want to delete this lesson?')) return;
 
-    fetch('/Lesson/Delete', {
+    fetch('/Admin/Lesson/Delete', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -141,7 +141,7 @@ function createInput(enrollment) {
 
 async function getStudents() {
     try {
-        const response = await fetch(`/Enrollment/GetStudentsByLessonId?lessonId=${lessonId}`);
+        const response = await fetch(`/Admin/Enrollment/GetStudentsByLessonId?lessonId=${lessonId}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -181,7 +181,7 @@ document.getElementById('save-student-modal-button').addEventListener('click', a
     });
     if (removedEnrollmentsIds.length !== 0) {
     try {
-        const response = await fetch('/Enrollment/Delete', {
+        const response = await fetch('/Admin/Enrollment/Delete', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -202,7 +202,7 @@ document.getElementById('save-student-modal-button').addEventListener('click', a
     }
     if (enrollments.length !== 0) {
     try {
-        const response = await fetch('/Enrollment/Create', {
+        const response = await fetch('/Admin/Enrollment/Create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
