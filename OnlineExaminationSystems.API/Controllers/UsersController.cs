@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos.User;
 using OnlineExaminationSystems.API.Models.Entities;
@@ -29,6 +30,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Get()
         {
             var users = _userService.GetAll();
@@ -36,6 +38,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Get(int id)
         {
             var user = _userService.GetById(id);
@@ -44,6 +47,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> CreateAsync(UserUpdateRequestModel model)
         {
             var validationResult = await _validatorUserUpdateRequest.ValidateAsync(model);
@@ -56,6 +60,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> UpdateAsync(int id, UserUpdateRequestModel model)
         {
             var user = _mapper.Map<User>(model);
@@ -72,6 +77,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Delete(int id)
         {
             var result = _userService.Delete(id);
@@ -91,29 +97,5 @@ namespace OnlineExaminationSystems.API.Controllers
             var lessons = _enrollmentsService.GetEnrollmentsByUserId(id);
             return Ok(lessons);
         }
-
-        //[HttpPatch("{id}")]
-        //public async Task<IActionResult> Patch(int id, JsonPatchDocument<User> patchDocument)
-        //{
-        //    var user = _repository.GetById(id);
-
-        //    if (user is null)
-        //        return NotFound();
-
-        //    patchDocument.ApplyTo(user);
-
-        //    var validationResult = await _validatorUser.ValidateAsync(user);
-
-        //    if (!validationResult.IsValid)
-        //        return BadRequest(validationResult.Errors);
-
-        //    var passwordPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "/Password", "Password" };
-        //    if (passwordPaths.Any(p => patchDocument.Operations.Any(op => op.path.Equals(p, StringComparison.OrdinalIgnoreCase))))
-        //        user.Password = _passwordHashHelper.HashPassword(user.Password);
-
-        //    var result = _repository.Update(user);
-
-        //    return Ok(result);
-        //}
     }
 }

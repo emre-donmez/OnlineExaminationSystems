@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
@@ -14,13 +13,14 @@ namespace OnlineExaminationSystems.API.Controllers
         private readonly IValidator<LoginRequestModel> _validatorLoginRequestModel;
         private readonly IUsersService _userService;
 
-        public AuthController(IValidator<LoginRequestModel> validatorLoginRequestModel,IUsersService usersService)
+        public AuthController(IValidator<LoginRequestModel> validatorLoginRequestModel, IUsersService usersService)
         {
             _userService = usersService;
             _validatorLoginRequestModel = validatorLoginRequestModel;
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginRequestModel model)
         {
             var validationResult = await _validatorLoginRequestModel.ValidateAsync(model);

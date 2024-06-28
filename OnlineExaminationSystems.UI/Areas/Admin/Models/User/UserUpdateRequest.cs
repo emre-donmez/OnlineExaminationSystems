@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.UI.Models.User
+﻿namespace OnlineExaminationSystems.UI.Areas.Admin.Models.User
 {
     public class UserUpdateRequest
     {

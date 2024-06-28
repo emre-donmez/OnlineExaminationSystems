@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models.Enrollment;
-using OnlineExaminationSystems.UI.Models.User;
-using System.Reflection;
 
-namespace OnlineExaminationSystems.UI.Controllers
+namespace OnlineExaminationSystems.UI.Areas.Admin.Controllers
 {
     public class EnrollmentController : Controller
     {
@@ -25,7 +24,7 @@ namespace OnlineExaminationSystems.UI.Controllers
         {
             var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetStudentsByLessonIdEndpoint(lessonId));
             var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
-            
+
             foreach (var enrollment in enrollments)
             {
                 enrollment.User = users.FirstOrDefault(x => x.Id == enrollment.UserId);
@@ -47,9 +46,9 @@ namespace OnlineExaminationSystems.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] List<int> models)
         {
-           foreach (var model in models)
+            foreach (var model in models)
             {
-               await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentEndPointWithId(model));
+                await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentEndPointWithId(model));
             }
 
             return Ok();

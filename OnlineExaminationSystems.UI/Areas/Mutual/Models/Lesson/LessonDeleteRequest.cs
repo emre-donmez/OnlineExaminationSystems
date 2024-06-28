@@ -1,4 +1,4 @@
-﻿namespace OnlineExaminationSystems.UI.Models.Lesson
+﻿namespace OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson
 {
     public class LessonDeleteRequest
     {

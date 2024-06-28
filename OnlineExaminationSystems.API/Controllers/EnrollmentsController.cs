@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
@@ -19,6 +20,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Get()
         {
             var enrollments = _enrollmentsService.GetAll();
@@ -26,6 +28,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Get(int id)
         {
             var enrollment = _enrollmentsService.GetById(id);
@@ -33,6 +36,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Create(EnrollmentUpdateRequestModel model)
         {
             var validationResult = await _validatorEnrollmentUpdateRequest.ValidateAsync(model);
@@ -45,6 +49,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Update(int id, EnrollmentUpdateRequestModel model)
         {
             var validationResult = await _validatorEnrollmentUpdateRequest.ValidateAsync(model);
@@ -57,6 +62,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Delete(int id)
         {
             var result = _enrollmentsService.Delete(id);

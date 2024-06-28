@@ -1,6 +1,8 @@
-﻿@model IEnumerable<OnlineExaminationSystems.UI.Models.Lesson.Lesson>
+﻿@model IEnumerable<OnlineExaminationSystems.UI.Areas.Admin.Models.Lesson.Lesson>
 @{
     ViewData["Title"] = "Lesson List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 <h1 class="my-4">Lesson List</h1>
 
@@ -51,7 +53,7 @@
                     <div class="form-group">
                         <label for="editUser">Academician:</label>
                         <select class="form-control form-select" id="editUserId" name="userId">
-                            @foreach (var user in ((List<OnlineExaminationSystems.UI.Models.User.User>)ViewBag.Users).Where(user => user.RoleId == 1).ToList())
+                            @foreach (var user in ((List<OnlineExaminationSystems.UI.Areas.Admin.Models.User.User>)ViewBag.Users).Where(user => user.RoleId == 1).ToList())
                             {
                                 <option value="@user.Id">@user.Name @user.Surname</option>
                             }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models.Role;
-using OnlineExaminationSystems.UI.Models.User;
 
-namespace OnlineExaminationSystems.UI.Controllers
+namespace OnlineExaminationSystems.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class UserController : Controller
     {
         private readonly IApiRequestHelper _apiRequestHelper;
@@ -41,7 +42,6 @@ namespace OnlineExaminationSystems.UI.Controllers
             var response = await _apiRequestHelper.PostAsync<User>(ApiEndpoints.UserEndpoint, model);
             return Ok();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] UserDeleteRequest model)

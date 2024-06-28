@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using OnlineExaminationSystems.UI.Models.Role;
 
-namespace OnlineExaminationSystems.UI.Models.User
+namespace OnlineExaminationSystems.UI.Areas.Admin.Models.User
 {
     public class User
     {
@@ -10,6 +10,6 @@ namespace OnlineExaminationSystems.UI.Models.User
         public string Email { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; }
-        public Role.Role? Role { get; internal set; }
+        public Role? Role { get; internal set; }
     }
 }

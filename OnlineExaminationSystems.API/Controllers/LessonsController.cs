@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
@@ -23,6 +24,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "1")]
         public IActionResult Get()
         {
             var lessons = _lessonsService.GetAll();
@@ -75,6 +77,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpGet("{id}/students")]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult GetStudentsByLessonId(int id)
         {
             var exams = _enrollmentsService.GetStudentsByLessonId(id);

@@ -34,7 +34,7 @@
 
         public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";
 
-        public static string GetStudentsByLessonIdEndpoint(int id) => $"{LessonEndpoint}/{id}/students";
+        public static string GetStudentsByLessonIdEndpoint(int id) => $"{LessonEndpoint}/{id}/Students";
 
         public static string EnrollmentEndPointWithId(int id) => $"{EnrollmentEndpoint}/{id}";
 

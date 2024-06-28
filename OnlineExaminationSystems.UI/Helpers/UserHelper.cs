@@ -22,9 +22,8 @@ namespace OnlineExaminationSystems.UI.Helpers
         }
 
         public static string? GetRole(HttpContext context) => GetClaimValue(context, "role");
-
         public static string? GetUserName(HttpContext context) => GetClaimValue(context, "unique_name");
-
+        public static int GetUserId(HttpContext context) => Convert.ToInt32(GetClaimValue(context, "nameid"));
         public static bool IsInRole(HttpContext context, string role) => GetRole(context) == role;
 
     }

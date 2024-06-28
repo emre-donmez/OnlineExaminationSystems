@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
+using OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson;
 using OnlineExaminationSystems.UI.Helpers;
 using OnlineExaminationSystems.UI.Models.Dtos;
 using OnlineExaminationSystems.UI.Models.Exam;
-using OnlineExaminationSystems.UI.Models.Lesson;
 using OnlineExaminationSystems.UI.Models.Question;
 using OnlineExaminationSystems.UI.Models.Result;
-using OnlineExaminationSystems.UI.Models.User;
 
 namespace OnlineExaminationSystems.UI.Controllers
 {

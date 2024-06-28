@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
+using OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson;
 using OnlineExaminationSystems.UI.Helpers;
-using OnlineExaminationSystems.UI.Models.Lesson;
-using OnlineExaminationSystems.UI.Models.User;
 
-namespace OnlineExaminationSystems.UI.Controllers
+namespace OnlineExaminationSystems.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class LessonController : Controller
     {
         private readonly IApiRequestHelper _apiRequestHelper;
@@ -24,13 +25,6 @@ namespace OnlineExaminationSystems.UI.Controllers
             }
 
             ViewBag.Users = users;
-            return View(lessons);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Academician(int userId)
-        {
-            var lessons = await _apiRequestHelper.GetAsync<IEnumerable<Lesson>>(ApiEndpoints.GetAcademicianLessonsByUserId(userId));
             return View(lessons);
         }
 
