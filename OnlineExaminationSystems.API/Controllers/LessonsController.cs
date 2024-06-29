@@ -1,87 +1,90 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Controllers
+namespace OnlineExaminationSystems.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class LessonsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LessonsController : ControllerBase
+    private readonly ILessonsService _lessonsService;
+    private readonly IValidator<LessonUpdateRequestModel> _validatorLessonUpdateRequest;
+    private readonly IExamsService _examsService;
+    private readonly IEnrollmentsService _enrollmentsService;
+
+    public LessonsController(ILessonsService lessonsService, IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest, IExamsService examsService, IEnrollmentsService enrollmentsService)
     {
-        private readonly ILessonsService _lessonsService;
-        private readonly IValidator<LessonUpdateRequestModel> _validatorLessonUpdateRequest;
-        private readonly IExamsService _examsService;
-        private readonly IEnrollmentsService _enrollmentsService;
+        _lessonsService = lessonsService;
+        _validatorLessonUpdateRequest = validatorLessonUpdateRequest;
+        _examsService = examsService;
+        _enrollmentsService = enrollmentsService;
+    }
 
-        public LessonsController(ILessonsService lessonsService, IValidator<LessonUpdateRequestModel> validatorLessonUpdateRequest, IExamsService examsService, IEnrollmentsService enrollmentsService)
-        {
-            _lessonsService = lessonsService;
-            _validatorLessonUpdateRequest = validatorLessonUpdateRequest;
-            _examsService = examsService;
-            _enrollmentsService = enrollmentsService;
-        }
+    [HttpGet]
+    public IActionResult Get()
+    {
+        var lessons = _lessonsService.GetAll();
+        return Ok(lessons);
+    }
 
-        [HttpGet]
-        //[Authorize(Roles = "1")]
-        public IActionResult Get()
-        {
-            var lessons = _lessonsService.GetAll();
-            return Ok(lessons);
-        }
+    [HttpGet("{id}")]
+    public IActionResult Get(int id)
+    {
+        var lesson = _lessonsService.GetById(id);
+        return lesson != null ? Ok(lesson) : NotFound();
+    }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var lesson = _lessonsService.GetById(id);
-            return lesson != null ? Ok(lesson) : NotFound();
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(LessonUpdateRequestModel model)
+    {
+        var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
 
-        [HttpPost]
-        public async Task<IActionResult> Create(LessonUpdateRequestModel model)
-        {
-            var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+        var lesson = _lessonsService.Create(model);
+        return CreatedAtAction(nameof(Get), new { id = lesson.Id }, lesson);
+    }
 
-            var lesson = _lessonsService.Create(model);
-            return CreatedAtAction(nameof(Get), new { id = lesson.Id }, lesson);
-        }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, LessonUpdateRequestModel model)
+    {
+        var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, LessonUpdateRequestModel model)
-        {
-            var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
 
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+        var lesson = _lessonsService.Update(id, model);
+        return Ok(lesson);
+    }
 
-            var lesson = _lessonsService.Update(id, model);
-            return Ok(lesson);
-        }
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var result = _lessonsService.Delete(id);
+        return result ? Ok() : NotFound();
+    }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var result = _lessonsService.Delete(id);
-            return result ? Ok() : NotFound();
-        }
+    [HttpGet("{id}/exams")]
+    public IActionResult GetExamsByLessonId(int id)
+    {
+        var exams = _examsService.GetExamsByLessonId(id);
+        return Ok(exams);
+    }
 
-        [HttpGet("{id}/exams")]
-        public IActionResult GetExamsByLessonId(int id)
-        {
-            var exams = _examsService.GetExamsByLessonId(id);
-            return Ok(exams);
-        }
+    [HttpGet("{id}/students")]
+    public IActionResult GetStudentsWithUserByLessonId(int id)
+    {
+        var users = _enrollmentsService.GetStudentsWithUserByLessonId(id);
+        return Ok(users);
+    }
 
-        [HttpGet("{id}/students")]
-        [Authorize(Roles = Roles.Admin)]
-        public IActionResult GetStudentsByLessonId(int id)
-        {
-            var exams = _enrollmentsService.GetStudentsByLessonId(id);
-            return Ok(exams);
-        }
+    [HttpGet("with-user")]
+    public IActionResult GetWithUser()
+    {
+        var lessons = _lessonsService.GetAllWithUser();
+        return Ok(lessons);
     }
 }

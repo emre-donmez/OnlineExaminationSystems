@@ -22,6 +22,8 @@ public static class ApiEndpoints
 
     public static string GetQuestionsByExamIdForExam(int examId) => $"{ExamEndpoint}/{examId}/Start";
 
+    public static string GetLessonsWithUserEndPoint = LessonEndpoint + "/with-user";
+
     public static string QuestionsEndPointWithId(int id) => $"{QuestionEndpoint}/{id}";
 
     public static string AnswerEndPoint = BaseEndpoint + "Answers";
@@ -32,6 +34,8 @@ public static class ApiEndpoints
 
     public const string EnrollmentEndpoint = BaseEndpoint + "Enrollments";
 
+    public const string UserWithRoleEndpoint = UserEndpoint + "/with-roles";
+
     public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";
 
     public static string GetStudentsByLessonIdEndpoint(int id) => $"{LessonEndpoint}/{id}/Students";
@@ -40,9 +44,9 @@ public static class ApiEndpoints
 
     public static string GetAcademicianLessonsByUserId(int userId) => $"{UserEndpoint}/{userId}/Lessons";
 
-    public static string GetResultsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/Results";
+    public static string GetResultsByExamIdEndPoint(int examId) => $"{ExamEndpoint}/{examId}/results-with-user-and-exam";
 
-    public static string GetEnrollmentByUserIdEndPoint(int userId) => $"{UserEndpoint}/{userId}/Enrollments";
+    public static string GetEnrollmentByUserIdEndPoint(int userId) => $"{UserEndpoint}/{userId}/enrollments-with-lesson";
 
     public static string CalculateResultEndPoint(int examId) => $"{ExamEndpoint}/{examId}/calculate-results";
 }

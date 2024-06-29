@@ -1,74 +1,96 @@
 ﻿using AutoMapper;
 using OnlineExaminationSystems.API.Data.Repository;
+using OnlineExaminationSystems.API.Models.Dtos;
 using OnlineExaminationSystems.API.Models.Entities;
 using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 
-namespace OnlineExaminationSystems.API.Services.Concrete
+namespace OnlineExaminationSystems.API.Services.Concrete;
+
+public class UsersService : CrudService<User>, IUsersService
 {
-    public class UsersService : CrudService<User>, IUsersService
+    private readonly IPasswordHashHelper _passwordHashHelper;
+    private readonly IAuthHelper _authHelper;
+
+    public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper, IAuthHelper authHelper) : base(repository, mapper)
     {
-        private readonly IPasswordHashHelper _passwordHashHelper;
-        private readonly IAuthHelper _authHelper;
+        _passwordHashHelper = passwordHashHelper;
+        _authHelper = authHelper;
+    }
 
-        public UsersService(IGenericRepository<User> repository, IMapper mapper, IPasswordHashHelper passwordHashHelper, IAuthHelper authHelper) : base(repository, mapper)
-        {
-            _passwordHashHelper = passwordHashHelper;
-            _authHelper = authHelper;
-        }
+    public User CreateUserWithHashedPassword(object updateRequestModel)
+    {
+        var user = _mapper.Map<User>(updateRequestModel);
 
-        public User CreateUserWithHashedPassword(object updateRequestModel)
-        {
-            var user = _mapper.Map<User>(updateRequestModel);
+        user.Password = _passwordHashHelper.HashPassword(user.Password);
 
+        return Create(user);
+    }
+
+    public User UpdateUserWithHashedPassword(User user)
+    {
+        var existedUser = _repository.GetById(user.Id);
+
+        if (!existedUser.Password.Equals(user.Password))
             user.Password = _passwordHashHelper.HashPassword(user.Password);
 
-            return Create(user);
-        }
+        return Update(user);
+    }
 
-        public User UpdateUserWithHashedPassword(User user)
-        {
-            var existedUser = _repository.GetById(user.Id);
+    public async Task<bool> IsUniqueEmailAsync(string email)
+    {
+        var query = $"SELECT 1 FROM USERS WHERE email = @Email";
+        var parameters = new { Email = email };
 
-            if(!existedUser.Password.Equals(user.Password))
-                user.Password = _passwordHashHelper.HashPassword(user.Password);
+        var existingUser = _repository.ExecuteQuery(query, parameters);
+        return existingUser.Count() == 0;
+    }
 
-            return Update(user);
-        }
+    public async Task<bool> IsUniqueEmailAsync(int id, string email)
+    {
+        var query = $"SELECT 1 FROM USERS WHERE email = @Email and id != @Id";
+        var parameters = new { Email = email, Id = id };
 
-        public async Task<bool> IsUniqueEmailAsync(string email)
-        {
-            var query = $"SELECT 1 FROM USERS WHERE email = @Email";
-            var parameters = new { Email = email };
+        var existingUser = _repository.ExecuteQuery(query, parameters);
+        return existingUser.Count() == 0;
+    }
 
-            var existingUser = _repository.ExecuteQuery(query, parameters);
-            return existingUser.Count() == 0;
-        }
+    public string? Authenticate(string email, string password)
+    {
+        password = _passwordHashHelper.HashPassword(password);
 
-        public async Task<bool> IsUniqueEmailAsync(int id, string email)
-        {
-            var query = $"SELECT 1 FROM USERS WHERE email = @Email and id != @Id";
-            var parameters = new { Email = email, Id = id };
+        var query = $"SELECT id AS Id,Name,Surname,Email,Password,role_id AS RoleId FROM USERS WHERE email = @Email and password = @Password";
+        var parameters = new { Email = email, Password = password };
 
-            var existingUser = _repository.ExecuteQuery(query, parameters);
-            return existingUser.Count() == 0;
-        }
+        var user = _repository.ExecuteQueryFirstOrDefault(query, parameters);
 
-        public string? Authenticate(string email, string password)
-        {
-            password = _passwordHashHelper.HashPassword(password);
+        return user != null ? _authHelper.GenerateJWTToken(user) : null;
+    }
 
-            var query = $"SELECT id AS Id,Name,Surname,Email,Password,role_id AS RoleId FROM USERS WHERE email = @Email and password = @Password";
-            var parameters = new { Email = email, Password = password };
+    public string? Refresh(string token)
+    {
+        return _authHelper.RefreshJWTToken(token);
+    }
 
-            var user = _repository.ExecuteQueryFirstOrDefault(query, parameters);
+    public IEnumerable<UserWithRoleResponseModel> GetAllWithRoles()
+    {
+        var parentTable = "Users";
+        var childTable = "Roles";
+        var foreignKey = "role_id";
+        var parentColumns = "Users.id AS Id,Users.Name,Users.Surname,Users.Email,Users.Password,Users.role_id AS RoleId";
+        var childColumns = "Roles.id AS Id,Roles.Name,Roles.Description";
 
-            return user != null ? _authHelper.GenerateJWTToken(user) : null;
-        }
-
-        public string? Refresh(string token)
-        {
-            return _authHelper.RefreshJWTToken(token);
-        }
+        return _repository.GetAllWithRelated<UserWithRoleResponseModel, Role>(
+            parentTable,
+            childTable,
+            foreignKey,
+            parentColumns,
+            childColumns,
+            (user, role) =>
+            {
+                user.Role = role;
+                return user;
+            }
+        );
     }
 }

@@ -1,10 +1,13 @@
-﻿using OnlineExaminationSystems.API.Models.Entities;
+﻿using OnlineExaminationSystems.API.Models.Dtos;
+using OnlineExaminationSystems.API.Models.Entities;
 
-namespace OnlineExaminationSystems.API.Services.Abstract
+namespace OnlineExaminationSystems.API.Services.Abstract;
+
+public interface ILessonsService : ICrudService<Lesson>
 {
-    public interface ILessonsService : ICrudService<Lesson>
-    {
-        IEnumerable<Lesson> GetLessonsByUserId(int userId);
-        Task<bool> IsAnyUser(int id);
-    }
+    IEnumerable<LessonWithUserResponseModel> GetAllWithUser();
+
+    IEnumerable<Lesson> GetLessonsByUserId(int userId);
+
+    Task<bool> IsAnyUser(int id);
 }

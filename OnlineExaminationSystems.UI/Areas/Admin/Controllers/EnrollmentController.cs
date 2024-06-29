@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
 using OnlineExaminationSystems.UI.Areas.Mutual.Models.Enrollment;
 using OnlineExaminationSystems.UI.Helpers;
 
@@ -14,6 +13,7 @@ public class EnrollmentController : Controller
     {
         _apiRequestHelper = apiRequestHelper;
     }
+
     public async Task<IActionResult> GetAll()
     {
         var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.EnrollmentEndpoint);
@@ -24,12 +24,6 @@ public class EnrollmentController : Controller
     public async Task<IActionResult> GetStudentsByLessonId(int lessonId)
     {
         var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetStudentsByLessonIdEndpoint(lessonId));
-        var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
-
-        foreach (var enrollment in enrollments)
-        {
-            enrollment.User = users.FirstOrDefault(x => x.Id == enrollment.UserId);
-        }
 
         return Json(enrollments);
     }

@@ -1,10 +1,12 @@
-﻿using OnlineExaminationSystems.API.Models.Entities;
+﻿using OnlineExaminationSystems.API.Models.Dtos;
+using OnlineExaminationSystems.API.Models.Entities;
 
 namespace OnlineExaminationSystems.API.Services.Abstract
 {
     public interface IEnrollmentsService : ICrudService<Enrollment>
     {
-        IEnumerable<Enrollment> GetEnrollmentsByUserId(int id);
-        IEnumerable<Enrollment> GetStudentsByLessonId(int id);
+        IEnumerable<EnrollmentWithLessonResponseModel> GetEnrollmentsWithLessonByUserId(int id);
+
+        IEnumerable<EnrollmentWithUserResponseModel> GetStudentsWithUserByLessonId(int id);
     }
 }

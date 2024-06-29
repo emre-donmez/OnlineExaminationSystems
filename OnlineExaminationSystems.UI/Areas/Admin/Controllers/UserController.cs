@@ -17,13 +17,8 @@ public class UserController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
+        var users = await _apiRequestHelper.GetAsync<IEnumerable<UserWithRole>>(ApiEndpoints.UserWithRoleEndpoint);
         var roles = await _apiRequestHelper.GetAsync<IEnumerable<Role>>(ApiEndpoints.RoleEndpoint);
-
-        foreach (var user in users)
-        {
-            user.Role = roles.FirstOrDefault(x => x.Id == user.RoleId);
-        }
 
         ViewBag.Roles = roles;
         return View(users);

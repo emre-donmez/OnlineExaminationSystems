@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Areas.Academician.Models.Exam;
 using OnlineExaminationSystems.UI.Areas.Academician.Models.Question;
-using OnlineExaminationSystems.UI.Areas.Academician.Models.Result;
-using OnlineExaminationSystems.UI.Areas.Admin.Models.User;
 using OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson;
 using OnlineExaminationSystems.UI.Helpers;
 
@@ -27,27 +25,6 @@ public class ExamController : Controller
         ViewBag.Lesson = lesson;
 
         return View(exams);
-    }
-
-    public async Task<IActionResult> Results(int examId)
-    {
-        var results = await _apiRequestHelper.GetAsync<IEnumerable<Result>>(ApiEndpoints.GetResultsByExamIdEndPoint(examId));
-        var users = await _apiRequestHelper.GetAsync<IEnumerable<User>>(ApiEndpoints.UserEndpoint);
-        var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.ExamEndpoint);
-        foreach (var result in results)
-        {
-            result.User = users.FirstOrDefault(x => x.Id == result.UserId);
-            result.Exam = exams.FirstOrDefault(x => x.Id == result.ExamId);
-        }
-        TempData["examId"] = examId;
-        return View(results);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CalculateResult([FromBody] int examId)
-    {
-        await _apiRequestHelper.GetAsync<object>(ApiEndpoints.CalculateResultEndPoint(examId));
-        return Ok();
     }
 
     [HttpPost]

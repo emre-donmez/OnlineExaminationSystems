@@ -32,7 +32,7 @@
                     <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Question", new { examId = exam.Id })'">
                         <i class="fas fa-question-circle"></i> Questions
                     </button>
-                    <button class="btn btn-info" onclick="location.href='@Url.Action("Results", "Exam", new { examId = exam.Id })'">
+                    <button class="btn btn-info" onclick="location.href='@Url.Action("Index", "Result", new { examId = exam.Id })'">
                         <i class="fas fa-chart-bar"></i> Results
                     </button>
                     <button class="btn btn-warning" onclick="openEditModal('@exam.Id', '@exam.Name', '@exam.LessonId', '@exam.QuestionCount', '@exam.Duration', '@exam.StartedDate.ToString("yyyy-MM-ddTHH:mm")')">
@@ -96,4 +96,4 @@
     </div>
 </div>
 
-<script src="~/js/Exam.js"></script>
+<script src="~/js/Exam.js" asp-append-version="true"></script>

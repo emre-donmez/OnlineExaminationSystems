@@ -1,6 +1,6 @@
 ﻿namespace OnlineExaminationSystems.UI.Areas.Academician.Models.Result;
 
-public class Result
+public class ResultWithUserAndExam
 {
     public int Id { get; set; }
     public int UserId { get; set; }
