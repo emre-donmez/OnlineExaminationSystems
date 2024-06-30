@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 using OnlineExaminationSystems.API.Services.Concrete;
 
@@ -63,6 +65,20 @@ namespace OnlineExaminationSystems.API.Controllers
         {
             var result = _answersService.Delete(id);
             return result ? Ok() : NotFound();
+        }
+
+        [HttpPost("bulk")]
+        public async Task<IActionResult> BulkInsert(IEnumerable<AnswerUpdateRequestModel> models)
+        {
+            foreach (var model in models)
+            {
+                var validationResult = await _validatorAnswerUpdateRequestModel.ValidateAsync(model);
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
+            }
+
+            var enrollment = _answersService.BulkInsert(models);
+            return Ok();
         }
     }
 }

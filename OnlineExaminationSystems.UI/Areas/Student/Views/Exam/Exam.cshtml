@@ -23,21 +23,20 @@
                         <input class="form-check-input" type="radio"
                                name="question_@i"
                                value="@Model[i].Options[j]"
-                               id="q@i_option@j"
                                data-question-id="@Model[i].Id" />
-                        <label class="form-check-label" for="q@i_option@j">
+                        <label class="form-check-label">
                             @Model[i].Options[j]
                         </label>
-                        <input type="hidden" name="Answers[@i].QuestionId" value="@Model[i].Id" />
                     </div>
                 }
             </div>
         </div>
         <hr />
     }
-
+    <input type="hidden" value="@Model.Count" id="questionCount" />
     <button type="button" class="btn btn-success" id="exam-end-button">Submit Exam</button>
 </form>
+
 <script src="/js/examPage.js" asp-append-version="true"></script>
 
 @section Scripts {

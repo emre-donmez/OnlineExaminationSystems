@@ -16,7 +16,7 @@ public class EnrollmentsService : CrudService<Enrollment>, IEnrollmentsService
     {
         var parentTable = "Enrollments";
         var childTable = "Lessons";
-        var foreignKey = "user_id";
+        var foreignKey = "lesson_id";
         var parentColumns = "Enrollments.id AS Id,Enrollments.user_id AS UserId,Enrollments.lesson_id AS LessonId";
         var childColumns = "Lessons.id AS Id,Lessons.Name,Lessons.responsible_user_id AS UserId";
         var where = $"user_id = {id}";

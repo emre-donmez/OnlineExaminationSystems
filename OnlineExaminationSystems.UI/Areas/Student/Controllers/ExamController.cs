@@ -15,18 +15,18 @@ public class ExamController : Controller
     {
         _apiRequestHelper = apiRequestHelper;
     }
+
     public async Task<IActionResult> Index(int lessonId)
     {
         var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
         return View(exams);
     }
 
-    public async Task<IActionResult> Exam(int examId)
+    public async Task<IActionResult> Exam(Exam exam)
     {
-        var exam = await _apiRequestHelper.GetAsync<Exam>(ApiEndpoints.GetExamById(examId));
         ViewBag.ExamName = exam.Name;
         ViewBag.Duration = exam.Duration;
-        var questions = await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.GetQuestionsByExamIdForExam(examId));
+        var questions = await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.GetQuestionsByExamIdForExam(exam.Id));
         return View(questions);
     }
 
@@ -34,11 +34,15 @@ public class ExamController : Controller
     public async Task<IActionResult> SubmitExam([FromBody] List<AnswerSubmitRequestModel> givenAnswers)
     {
         var userId = UserHelper.GetUserId(HttpContext);
-        foreach (var givenAnswer in givenAnswers)
+
+        givenAnswers = givenAnswers.Select(x => new AnswerSubmitRequestModel
         {
-            givenAnswer.UserId = userId;
-            await _apiRequestHelper.PostAsync<AnswerSubmitRequestModel>(ApiEndpoints.AnswerEndPoint, givenAnswer);
-        }
+            QuestionId = x.QuestionId,
+            GivenAnswer = x.GivenAnswer,
+            UserId = userId
+        }).ToList();
+
+        await _apiRequestHelper.PostAsync(ApiEndpoints.AnswerBulkEndpoint, givenAnswers);
 
         return Ok();
     }

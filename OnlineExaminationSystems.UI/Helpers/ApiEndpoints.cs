@@ -26,7 +26,7 @@ public static class ApiEndpoints
 
     public static string QuestionsEndPointWithId(int id) => $"{QuestionEndpoint}/{id}";
 
-    public static string AnswerEndPoint = BaseEndpoint + "Answers";
+    public const string AnswerEndPoint = BaseEndpoint + "Answers";
 
     public const string QuestionEndpoint = BaseEndpoint + "Questions";
 
@@ -35,6 +35,8 @@ public static class ApiEndpoints
     public const string EnrollmentEndpoint = BaseEndpoint + "Enrollments";
 
     public const string EnrollmentBulkEndpoint = EnrollmentEndpoint + "/bulk";
+
+    public const string AnswerBulkEndpoint = AnswerEndPoint + "/bulk";
 
     public const string UserWithRoleEndpoint = UserEndpoint + "/with-roles";
 

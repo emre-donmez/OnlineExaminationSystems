@@ -1,12 +1,14 @@
 document.getElementById('exam-end-button').addEventListener('click', function () {
-    const radioButtons = document.querySelectorAll('.form-check-input[type="radio"]:checked');
     let answers = [];
-
-    radioButtons.forEach(radio => {
-        const questionId = radio.getAttribute('data-question-id');
-        const selectedAnswer = radio.value;
-        answers.push(new Answer(questionId, selectedAnswer));
-    });
+    const questionCount = document.getElementById('questionCount').value;
+    for (let i = 0; i < questionCount; i++) {
+        const selectedOption = document.querySelector('input[name="question_' + i + '"]:checked');
+        if (selectedOption) {
+            const questionId = selectedOption.getAttribute('data-question-id');
+            const selectedAnswer = selectedOption.value;
+            answers.push(new Answer(questionId, selectedAnswer));
+        }
+    }
 
     fetch('/Student/Exam/SubmitExam', {
         method: 'POST',
@@ -20,9 +22,9 @@ document.getElementById('exam-end-button').addEventListener('click', function ()
                 throw new Error('Network response was not ok');
             }
             toastr.success('Exam done!');
-            //setTimeout(() => {
-            //    window.location.href = "/Student/lessons?userId=" + JSON.parse(localStorage.getItem('jwt')).nameid;
-            //}, 2500);
+            setTimeout(() => {
+                window.location.href = "/Student/Lesson";
+            }, 2500);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
