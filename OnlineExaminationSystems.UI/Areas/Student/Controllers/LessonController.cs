@@ -16,8 +16,7 @@ public class LessonController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var userId = UserHelper.GetUserId(HttpContext);
-        var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetEnrollmentByUserIdEndPoint(userId));
+        var enrollments = await _apiRequestHelper.GetAsync<IEnumerable<Enrollment>>(ApiEndpoints.GetEnrollmentByUserIdEndPoint(UserHelper.GetUserId(HttpContext)));
 
         return View(enrollments);
     }

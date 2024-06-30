@@ -36,6 +36,15 @@ public class ApiRequestHelper : IApiRequestHelper
         return await HandleResponse<T>(response);
     }
 
+    public async Task PostAsync(string endpoint, object data)
+    {
+        var stringContent = CreateStringContent(data);
+
+        HttpResponseMessage response = await _client.PostAsync(endpoint, stringContent);
+
+        response.EnsureSuccessStatusCode();
+    }
+
     public async Task<T> PutAsync<T>(string endpoint, object data)
     {
         var stringContent = CreateStringContent(data);
@@ -51,6 +60,19 @@ public class ApiRequestHelper : IApiRequestHelper
 
         response.EnsureSuccessStatusCode();
         return response.IsSuccessStatusCode ? true : false;
+    }
+
+    public async Task DeleteAsync(string endpoint, IEnumerable<int> ids)
+    {
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri(endpoint),
+            Content = new StringContent(JsonSerializer.Serialize(ids), Encoding.UTF8, "application/json")
+        };
+
+        HttpResponseMessage response = await _client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
     }
 
     private static async Task<T> HandleResponse<T>(HttpResponseMessage response)

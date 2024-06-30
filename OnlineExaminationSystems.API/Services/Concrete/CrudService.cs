@@ -58,5 +58,16 @@ namespace OnlineExaminationSystems.API.Services.Concrete
         {
             return _repository.Delete(id);
         }
+
+        public IEnumerable<T> BulkInsert(IEnumerable<object> updateRequestModels)
+        {
+            var models = _mapper.Map<IEnumerable<T>>(updateRequestModels);
+            return _repository.BulkInsert(models);
+        }
+
+        public void BulkDelete(IEnumerable<int> ids)
+        {
+            _repository.BulkDelete(ids);
+        }
     }
 }

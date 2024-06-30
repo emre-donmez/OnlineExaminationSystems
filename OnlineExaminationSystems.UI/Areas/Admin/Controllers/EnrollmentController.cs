@@ -31,21 +31,14 @@ public class EnrollmentController : Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] List<EnrollmentUpdateRequestModel> models)
     {
-        foreach (var model in models)
-        {
-            await _apiRequestHelper.PostAsync<Enrollment>(ApiEndpoints.EnrollmentEndpoint, model);
-        }
+        await _apiRequestHelper.PostAsync(ApiEndpoints.EnrollmentBulkEndpoint, models);
         return Ok();
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete([FromBody] List<int> models)
     {
-        foreach (var model in models)
-        {
-            await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentEndPointWithId(model));
-        }
-
+        await _apiRequestHelper.DeleteAsync(ApiEndpoints.EnrollmentBulkEndpoint, models);
         return Ok();
     }
 }

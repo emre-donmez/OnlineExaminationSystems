@@ -34,6 +34,8 @@ public static class ApiEndpoints
 
     public const string EnrollmentEndpoint = BaseEndpoint + "Enrollments";
 
+    public const string EnrollmentBulkEndpoint = EnrollmentEndpoint + "/bulk";
+
     public const string UserWithRoleEndpoint = UserEndpoint + "/with-roles";
 
     public static string LessonEndPointWithId(int id) => $"{LessonEndpoint}/{id}";

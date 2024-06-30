@@ -68,5 +68,10 @@ public interface IGenericRepository<T> where T : IEntity
     void ExecuteStoredProcedure(string storedProcedure, object parameters);
 
     IEnumerable<TParent> GetAllWithRelated<TParent, TChild>(string parentTable, string childTable, string foreignKey, string parentColumns, string childColumns, Func<TParent, TChild, TParent> map, string where = "") where TParent : class, IEntity;
+
     IEnumerable<TParent> GetAllWithRelated<TParent, TChild1, TChild2>(string parentTable, string childTable1, string childTable2, string foreignKey1, string foreignKey2, string parentColumns, string childColumns1, string childColumns2, Func<TParent, TChild1, TChild2, TParent> map, string where = "") where TParent : class, IEntity;
+
+    IEnumerable<T> BulkInsert(IEnumerable<T> items);
+
+    void BulkDelete(IEnumerable<int> ids);
 }

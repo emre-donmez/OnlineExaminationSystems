@@ -201,17 +201,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
     }
 
     public IEnumerable<TParent> GetAllWithRelated<TParent, TChild1, TChild2>(
-    string parentTable,
-    string childTable1,
-    string childTable2,
-    string foreignKey1,
-    string foreignKey2,
-    string parentColumns,
-    string childColumns1,
-    string childColumns2,
-    Func<TParent, TChild1, TChild2, TParent> map,
-    string where = "")
-    where TParent : class, IEntity
+        string parentTable,
+        string childTable1,
+        string childTable2,
+        string foreignKey1,
+        string foreignKey2,
+        string parentColumns,
+        string childColumns1,
+        string childColumns2,
+        Func<TParent, TChild1, TChild2, TParent> map,
+        string where = "")
+        where TParent : class, IEntity
     {
         var query = $@"
         SELECT {parentColumns}, {childColumns1}, {childColumns2}
@@ -243,5 +243,46 @@ public class GenericRepository<T> : IGenericRepository<T> where T : IEntity
             splitOn: "id");
 
         return result.Distinct().ToList();
+    }
+
+    public IEnumerable<T> BulkInsert(IEnumerable<T> items)
+    {
+        var query = $"INSERT INTO {_tableName} ({string.Join(',', _columnNamesWithAttribute)}) VALUES (@{string.Join(", @", _columnNames)})";
+
+        using var connection = _context.CreateConnection();
+        connection.Open();
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            connection.Execute(query, items, transaction: transaction);
+            transaction.Commit();
+            return items;
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+
+    public void BulkDelete(IEnumerable<int> ids)
+    {
+        var query = $"DELETE FROM {_tableName} WHERE id IN @Ids";
+
+        using var connection = _context.CreateConnection();
+        connection.Open();
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            connection.Execute(query, new { Ids = ids }, transaction: transaction);
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
     }
 }

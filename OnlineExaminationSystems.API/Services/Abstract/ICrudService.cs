@@ -15,5 +15,9 @@ namespace OnlineExaminationSystems.API.Services.Abstract
         T Update(int id, object updateRequestModel);
 
         bool Delete(int id);
+
+        IEnumerable<T> BulkInsert(IEnumerable<object> updateRequestModels);
+
+        void BulkDelete(IEnumerable<int> ids);
     }
 }

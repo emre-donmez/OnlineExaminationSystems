@@ -69,4 +69,27 @@ public class EnrollmentsController : ControllerBase
         var result = _enrollmentsService.Delete(id);
         return result ? Ok() : NotFound();
     }
+
+    [HttpPost("bulk")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<IActionResult> BulkInsert(IEnumerable<EnrollmentUpdateRequestModel> models)
+    {
+        foreach (var model in models)
+        {
+            var validationResult = await _validatorEnrollmentUpdateRequest.ValidateAsync(model);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+        }
+
+        var enrollment = _enrollmentsService.BulkInsert(models);
+        return Ok();
+    }
+
+    [HttpDelete("bulk")]
+    [Authorize(Roles = Roles.Admin)]
+    public IActionResult BulkDelete(IEnumerable<int> ids)
+    {
+        _enrollmentsService.BulkDelete(ids);
+        return Ok();
+    }
 }
