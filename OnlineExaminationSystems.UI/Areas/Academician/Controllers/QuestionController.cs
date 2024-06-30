@@ -22,17 +22,11 @@ public class QuestionController : Controller
         return View(questions);
     }
 
-    public async Task<IActionResult> CreateQuestion(int examId)
-    {
-        TempData["ExamId"] = examId;
-        return View();
-    }
-
     [HttpPost]
-    public async Task<IActionResult> CreateQuestion(QuestionUpdateRequestModel question)
+    public async Task<IActionResult> Create([FromBody] QuestionUpdateRequestModel question)
     {
         var createQuestion = await _apiRequestHelper.PostAsync<Question>(ApiEndpoints.QuestionEndpoint, question);
-        return RedirectToAction("Questions", new { examId = question.ExamId });
+        return Ok();
     }
 
     [HttpPost]

@@ -45,12 +45,8 @@
     </tbody>
 </table>
 
-<div>
-    <form asp-action="Create" method="post">
-        <input type="hidden" name="lessonId" value="@ViewBag.Lesson.Id"/>
-        <button type="submit" class="btn btn-success">Create New</button>
-    </form>
-</div>
+<button class="btn btn-primary" onclick="openCreateModal()">Create Exam</button>
+
 <input id="editLessonId" value="@ViewBag.Lesson.Id" hidden/>
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">

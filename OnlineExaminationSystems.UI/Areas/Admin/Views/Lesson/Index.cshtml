@@ -68,10 +68,8 @@
         </div>
     </div>
 </div>
-@{
-    var jsonUsers = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Users);
-}
-<div id="users" data-users="@jsonUsers"></div>
+
+<div id="users" data-users="@Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Users)"></div>
 
 <!-- Student Modal -->
 <div class="modal fade" id="studentsModal" tabindex="-1" aria-labelledby="studentsModalLabel" aria-hidden="true">

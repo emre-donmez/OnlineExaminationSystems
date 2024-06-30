@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.UI.Areas.Academician.Models.Exam;
-using OnlineExaminationSystems.UI.Areas.Academician.Models.Question;
 using OnlineExaminationSystems.UI.Areas.Mutual.Models.Lesson;
 using OnlineExaminationSystems.UI.Helpers;
 
@@ -16,11 +15,9 @@ public class ExamController : Controller
         _apiRequestHelper = apiRequestHelper;
     }
 
-    public async Task<IActionResult> Index(int lessonId)
+    public async Task<IActionResult> Index(Lesson lesson)
     {
-        var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lessonId));
-
-        var lesson = await _apiRequestHelper.GetAsync<Lesson>(ApiEndpoints.LessonEndPointWithId(lessonId));
+        var exams = await _apiRequestHelper.GetAsync<IEnumerable<Exam>>(ApiEndpoints.GetExamsByLessonIdEndPoint(lesson.Id));
 
         ViewBag.Lesson = lesson;
 
@@ -28,14 +25,7 @@ public class ExamController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(int lessonId)
-    {
-        TempData["lessonId"] = lessonId;
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreatePost(ExamUpdateRequestModel exam)
+    public async Task<IActionResult> Create([FromBody] ExamUpdateRequestModel exam)
     {
         var exams = await _apiRequestHelper.PostAsync<Exam>(ApiEndpoints.ExamEndpoint, exam);
         return Ok();
@@ -53,11 +43,5 @@ public class ExamController : Controller
     {
         var response = await _apiRequestHelper.DeleteAsync(ApiEndpoints.GetExamById(model.Id));
         return response ? Ok() : StatusCode(StatusCodes.Status500InternalServerError);
-    }
-
-    public async Task<IActionResult> Exam(int ExamId)
-    {
-        var questions = await _apiRequestHelper.GetAsync<List<QuestionForExam>>(ApiEndpoints.QuestionEndpoint, ExamId);
-        return View(questions);
     }
 }

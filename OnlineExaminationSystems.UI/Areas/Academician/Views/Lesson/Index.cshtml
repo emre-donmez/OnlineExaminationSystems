@@ -24,7 +24,7 @@
                         <td>@Html.DisplayFor(modelItem => item.Id)</td>
                         <td>@Html.DisplayFor(modelItem => item.Name)</td>
                         <td>
-                            <a href="@Url.Action("Index", "Exam", new { lessonId = @item.Id })" class="btn btn-dark">Exams</a>
+                            <a href="@Url.Action("Index", "Exam", item)" class="btn btn-dark">Exams</a>
                         </td>
                     </tr>
                 }
