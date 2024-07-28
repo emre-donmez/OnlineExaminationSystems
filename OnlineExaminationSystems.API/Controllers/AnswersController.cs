@@ -22,51 +22,6 @@ namespace OnlineExaminationSystems.API.Controllers
             _validatorAnswerUpdateRequestModel = validatorAnswerUpdateRequestModel;
         }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var exams = _answersService.GetAll();
-            return Ok(exams);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var exam = _answersService.GetById(id);
-            return exam != null ? Ok(exam) : NotFound();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(AnswerUpdateRequestModel model)
-        {
-            var validationResult = await _validatorAnswerUpdateRequestModel.ValidateAsync(model);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            var exam = _answersService.Create(model);
-            return CreatedAtAction(nameof(Get), new { id = exam.Id }, exam);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, AnswerUpdateRequestModel model)
-        {
-            var validationResult = await _validatorAnswerUpdateRequestModel.ValidateAsync(model);
-
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
-
-            var exam = _answersService.Update(id, model);
-            return Ok(exam);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var result = _answersService.Delete(id);
-            return result ? Ok() : NotFound();
-        }
-
         [HttpPost("bulk")]
         [Authorize(Roles = Roles.Student)]
         public async Task<IActionResult> BulkInsert(IEnumerable<AnswerUpdateRequestModel> models)

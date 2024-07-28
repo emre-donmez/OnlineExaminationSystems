@@ -24,14 +24,8 @@ public class ExamsController : ControllerBase
         _resultsService = resultsService;
     }
 
-    [HttpGet]
-    public IActionResult Get()
-    {
-        var exams = _examsService.GetAll();
-        return Ok(exams);
-    }
-
     [HttpGet("{id}")]
+    [Authorize(Roles = Roles.Academician)]
     public IActionResult Get(int id)
     {
         var exam = _examsService.GetById(id);

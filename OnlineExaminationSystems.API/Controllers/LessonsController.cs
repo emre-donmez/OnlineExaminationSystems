@@ -24,14 +24,8 @@ public class LessonsController : ControllerBase
         _enrollmentsService = enrollmentsService;
     }
 
-    [HttpGet]
-    public IActionResult Get()
-    {
-        var lessons = _lessonsService.GetAll();
-        return Ok(lessons);
-    }
-
     [HttpGet("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult Get(int id)
     {
         var lesson = _lessonsService.GetById(id);

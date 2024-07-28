@@ -20,18 +20,11 @@ namespace OnlineExaminationSystems.API.Controllers
             _validatorQuestionUpdateRequest = validatorQuestionUpdateRequest;
         }
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var questions = _questionsService.GetAll();
-            return Ok(questions);
-        }
-
         [HttpGet("{id}")]
+        [Authorize(Roles = Roles.Academician)]
         public IActionResult Get(int id)
         {
             var question = _questionsService.GetById(id);
-
             return question != null ? Ok(question) : NotFound();
         }
 
