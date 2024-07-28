@@ -106,10 +106,11 @@ async function openStudentsModal(id) {
     fillModal();
 }
 
+let alreadyStudent;
 async function fillModal() {
-    const students = await getStudents();
+    alreadyStudent = await getStudents();
     modalContainer.innerHTML = '';
-    students.forEach(student => { createInput(student) });
+    alreadyStudent.forEach(student => { createInput(student) });
 }
 
 let removedEnrollmentsIds = [];
@@ -157,7 +158,8 @@ async function getStudents() {
 function createSelect() {
     var copiedSelect = document.createElement('select');
     copiedSelect.className = 'form-control form-select mt-3';
-    users.filter(user => user.RoleId == 2).forEach(user => {
+    const alreadyStudentUserIds = alreadyStudent.map(student => student.userId);
+    users.filter(user => user.RoleId == 2 && !alreadyStudentUserIds.includes(user.Id)).forEach(user => {
         var copiedOption = document.createElement('option');
         copiedOption.value = user.Id;
         copiedOption.text = user.Email + ' | ' + user.Name + ' ' + user.Surname;

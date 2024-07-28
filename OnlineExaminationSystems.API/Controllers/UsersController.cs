@@ -31,7 +31,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = Roles.AdminAndAcademician)]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult Get()
     {
         var users = _userService.GetAll();
@@ -86,6 +86,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}/lessons")]
+    [Authorize(Roles = Roles.Academician)]
     public IActionResult GetLessonsByUserId(int id)
     {
         var lessons = _lessonsService.GetLessonsByUserId(id);
@@ -93,6 +94,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}/enrollments-with-lesson")]
+    [Authorize(Roles = Roles.Student)]
     public IActionResult GetEnrollmentsWithLessonByUserId(int id)
     {
         var enrollmentWithLessons = _enrollmentsService.GetEnrollmentsWithLessonByUserId(id);
@@ -100,6 +102,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("with-roles")]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult GetWithRoles()
     {
         var users = _userService.GetAllWithRoles();

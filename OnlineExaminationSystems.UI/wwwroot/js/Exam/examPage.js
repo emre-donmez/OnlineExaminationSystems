@@ -38,3 +38,18 @@ class Answer {
         this.givenAnswer = givenAnswer;
     }
 };
+
+document.addEventListener('DOMContentLoaded', function () {
+    var duration = $("#duration").val();
+    var timer = duration * 60;
+    var interval = setInterval(function () {
+        var minutes = Math.floor(timer / 60);
+        var seconds = timer % 60;
+        document.getElementById('timer').textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        timer--;
+        if (timer < 0) {
+            clearInterval(interval);
+            document.getElementById('examForm').submit();
+        }
+    }, 1000);
+});

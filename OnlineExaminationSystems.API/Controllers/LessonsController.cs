@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers;
@@ -37,6 +39,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Create(LessonUpdateRequestModel model)
     {
         var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
@@ -49,6 +52,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> Update(int id, LessonUpdateRequestModel model)
     {
         var validationResult = await _validatorLessonUpdateRequest.ValidateAsync(model);
@@ -61,6 +65,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult Delete(int id)
     {
         var result = _lessonsService.Delete(id);
@@ -68,6 +73,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpGet("{id}/exams")]
+    [Authorize(Roles = Roles.Student)]// student or academician
     public IActionResult GetExamsByLessonId(int id)
     {
         var exams = _examsService.GetExamsByLessonId(id);
@@ -75,6 +81,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpGet("{id}/students")]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult GetStudentsWithUserByLessonId(int id)
     {
         var users = _enrollmentsService.GetStudentsWithUserByLessonId(id);
@@ -82,6 +89,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpGet("with-user")]
+    [Authorize(Roles = Roles.Admin)]
     public IActionResult GetWithUser()
     {
         var lessons = _lessonsService.GetAllWithUser();

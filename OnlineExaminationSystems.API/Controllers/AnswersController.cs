@@ -68,6 +68,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPost("bulk")]
+        [Authorize(Roles = Roles.Student)]
         public async Task<IActionResult> BulkInsert(IEnumerable<AnswerUpdateRequestModel> models)
         {
             foreach (var model in models)

@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineExaminationSystems.API.Models.Dtos;
+using OnlineExaminationSystems.API.Models.Helpers;
 using OnlineExaminationSystems.API.Services.Abstract;
 
 namespace OnlineExaminationSystems.API.Controllers
@@ -34,6 +36,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Roles.Academician)]
         public async Task<IActionResult> Create(QuestionUpdateRequestModel model)
         {
             var validationResult = await _validatorQuestionUpdateRequest.ValidateAsync(model);
@@ -46,6 +49,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Roles.Academician)]
         public async Task<IActionResult> Update(int id, QuestionUpdateRequestModel model)
         {
             var validationResult = await _validatorQuestionUpdateRequest.ValidateAsync(model);
@@ -58,6 +62,7 @@ namespace OnlineExaminationSystems.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Roles.Academician)]
         public IActionResult Delete(int id)
         {
             var result = _questionsService.Delete(id);

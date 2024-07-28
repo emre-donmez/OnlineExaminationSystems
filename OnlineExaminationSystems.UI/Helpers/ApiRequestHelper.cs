@@ -80,7 +80,7 @@ public class ApiRequestHelper : IApiRequestHelper
         response.EnsureSuccessStatusCode();
         string responseData = await response.Content.ReadAsStringAsync();
 
-        if (typeof(T) == typeof(string))
+        if (typeof(T) == typeof(string) || typeof(T) == typeof(object))
             return (T)(object)responseData;
 
         var jsonSerializerOptions = new JsonSerializerOptions
