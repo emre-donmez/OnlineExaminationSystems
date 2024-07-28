@@ -67,7 +67,7 @@ public class LessonsController : ControllerBase
     }
 
     [HttpGet("{id}/exams")]
-    [Authorize(Roles = Roles.Student)]// student or academician
+    [Authorize(Roles = Roles.StudentOrAcademician)]
     public IActionResult GetExamsByLessonId(int id)
     {
         var exams = _examsService.GetExamsByLessonId(id);
