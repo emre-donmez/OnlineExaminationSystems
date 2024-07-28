@@ -44,10 +44,10 @@
                 <td>
                     @{
                         var examEndDate = item.StartedDate.AddMinutes(item.Duration);
-                        // if (DateTime.Now >= item.StartedDate && DateTime.Now <= examEndDate)
-                        // {
-                            <a class="btn btn-primary start-exam" href="@Url.Action("Exam", item)">Start</a>
-                       // }
+                       if (DateTime.Now >= item.StartedDate && DateTime.Now <= examEndDate) 
+                       {
+                         <a class="btn btn-primary start-exam" href="@Url.Action("Exam", item)">Start</a>
+                       }
                     }
                 </td>
 
